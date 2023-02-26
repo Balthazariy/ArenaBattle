@@ -17,6 +17,25 @@ namespace Balthazariy.ArenaBattle.Factories
             _shootFactory = new ShootFactory();
         }
 
+        public void CreateShoot(ShootType type)
+        {
+            _shootFactory.InitShootByType(type);
+        }
 
+        private void Update()
+        {
+            if (_shootFactory != null)
+                return;
+
+            _shootFactory.Update();
+        }
+
+        private void FixedUpdate()
+        {
+            if (_shootFactory != null)
+                return;
+
+            _shootFactory.FixedUpdate();
+        }
     }
 }

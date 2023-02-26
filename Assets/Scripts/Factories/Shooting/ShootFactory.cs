@@ -5,9 +5,6 @@ namespace Balthazariy.ArenaBattle.Factories.Shooting
 {
     public class ShootFactory
     {
-        private Transform _bulletParent;
-        private GameObject _bulletPrefab;
-
         private PlayerShoot _playerShoot;
 
         public ShootFactory()
@@ -23,13 +20,23 @@ namespace Balthazariy.ArenaBattle.Factories.Shooting
             _playerShoot.Update();
         }
 
+        public void FixedUpdate()
+        {
+            if (_playerShoot == null)
+                return;
+
+            _playerShoot.FixedUpdate();
+        }
+
         public void InitShootByType(ShootType type)
         {
+            var bulletPrefab = Resources.Load<GameObject>("Prefabs/BulletBase");
+
             switch (type)
             {
                 case ShootType.Player:
                     {
-                        _playerShoot = new PlayerShoot(_bulletParent, _bulletPrefab);
+                        _playerShoot = new PlayerShoot(GameObject.Find("[GAMEPLAY]/Objects").transform, bulletPrefab);
                     }
                     break;
                 case ShootType.BlueEnemy:

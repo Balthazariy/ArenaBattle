@@ -34,6 +34,7 @@ namespace Balthazariy.ArenaBattle.Shooting.Base
 
             _rigidbody = _selfObject.GetComponent<Rigidbody>();
             _collider = _selfObject.GetComponent<Collider>();
+            _behaviourHandler = _selfObject.GetComponent<OnBehaviourHandler>();
             _meshRenderer = _modelObject.GetComponent<MeshRenderer>();
 
             _behaviourHandler.TriggerEntered += OnTriggerEnterEventHandler;
