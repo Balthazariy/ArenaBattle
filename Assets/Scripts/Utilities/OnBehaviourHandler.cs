@@ -121,7 +121,7 @@ namespace Balthazariy.Utilities
             OnAnimationStringEvent?.Invoke(parameter);
         }
 
-        private void OnCollisionEnterEvent(Collision collision)
+        private void OnCollisionEnter(Collision collision)
         {
             CollisionEnter?.Invoke(collision);
         }
