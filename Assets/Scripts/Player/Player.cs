@@ -10,8 +10,14 @@ namespace Balthazariy.Player
     {
         [SerializeField] private GameObject _bulletPrefab;
         [SerializeField] private Transform _bulletParent;
+        [SerializeField] private Transform _cameraRoot;
+        [SerializeField] private Transform _bulletStartPosition;
 
         private List<BulletBase> _bullets;
+
+        private const float _shootCountdownTimer = 0.5f;
+        private float _currentShootCountdownTimer;
+        private bool _isShooted;
 
         private void Start()
         {
@@ -22,6 +28,17 @@ namespace Balthazariy.Player
         {
             for (int i = 0; i < _bullets.Count; i++)
                 _bullets[i].Update();
+
+            if (_isShooted)
+            {
+                _currentShootCountdownTimer -= Time.deltaTime;
+
+                if (_currentShootCountdownTimer <= 0)
+                {
+                    _currentShootCountdownTimer = _shootCountdownTimer;
+                    _isShooted = false;
+                }
+            }
         }
 
         private void FixedUpdate()
@@ -32,11 +49,20 @@ namespace Balthazariy.Player
 
         public void OnMouseClick(InputValue value)
         {
-            BulletBase bullet = new PlayerBullet(_bulletPrefab, _bulletParent);
+            if (!_isShooted)
+            {
+                var rotation = _cameraRoot.localEulerAngles + transform.localEulerAngles;
+                var startPosition = _bulletStartPosition.position;
 
-            bullet.BulletDestroyEvent += OnBulletDestroyEventHandler;
+                BulletBase bullet = new PlayerBullet(_bulletPrefab, _bulletParent, 30, rotation, startPosition);
 
-            _bullets.Add(bullet);
+                bullet.BulletDestroyEvent += OnBulletDestroyEventHandler;
+
+                _bullets.Add(bullet);
+
+                _currentShootCountdownTimer = _shootCountdownTimer;
+                _isShooted = true;
+            }
         }
 
         private void OnBulletDestroyEventHandler(BulletBase currentBullet)

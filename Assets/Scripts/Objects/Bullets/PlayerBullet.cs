@@ -5,8 +5,9 @@ namespace Balthazariy.Objects.Bullets
 {
     public class PlayerBullet : BulletBase
     {
-        public PlayerBullet(GameObject prefab, Transform parent) : base(prefab, parent)
+        public PlayerBullet(GameObject prefab, Transform parent, int damage, Vector3 playerRotation, Vector3 startPosition) : base(prefab, parent, damage, startPosition)
         {
+            _selfTransform.localEulerAngles = playerRotation;
         }
 
         public override void Update()

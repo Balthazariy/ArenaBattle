@@ -19,16 +19,22 @@ namespace Balthazariy.Objects.Base
         protected GameObject _modelObject;
         protected MeshRenderer _modelMeshRenderer;
 
-        protected const float BULLET_SPEED = 5.0f;
+        protected const float BULLET_SPEED = 1.0f;
 
         private bool _isAlive;
 
         #region Bullet Live Timer
-        private const float LIVE_TIME = 2.0f;
+        private const float LIVE_TIME = 5.0f;
         private float _currentLiveTime;
         #endregion
 
-        public BulletBase(GameObject prefab, Transform parent)
+        private int _bulletDamage;
+        private int _bulletHealth;
+        private const float _chanceToGetSecongLife = 25.0f;
+        private const float _chanceToRikochet = 25.0f;
+        private const float _chanceToNothing = 50.0f;
+
+        public BulletBase(GameObject prefab, Transform parent, int bulletDamage, Vector3 startPosition)
         {
             _selfObject = MonoBehaviour.Instantiate(prefab, parent);
             _selfTransform = _selfObject.transform;
@@ -43,7 +49,14 @@ namespace Balthazariy.Objects.Base
             _onBehaviourHandler.TriggerEntered += TriggerEnteredEventHandler;
             _onBehaviourHandler.CollisionEnter += OnCollisionEnterEventHandler;
 
+            _selfTransform.position = startPosition;
+
             _currentLiveTime = LIVE_TIME;
+
+            _bulletDamage = bulletDamage;
+            _bulletHealth = 1;
+
+            InitChancing();
 
             _isAlive = true;
         }
@@ -69,11 +82,16 @@ namespace Balthazariy.Objects.Base
         {
             _isAlive = false;
 
-            _onBehaviourHandler.TriggerEntered -= TriggerEnteredEventHandler;
+            --_bulletHealth;
 
-            BulletDestroyEvent?.Invoke(this);
+            if (_bulletHealth <= 0)
+            {
+                _onBehaviourHandler.TriggerEntered -= TriggerEnteredEventHandler;
 
-            MonoBehaviour.Destroy(_selfObject);
+                BulletDestroyEvent?.Invoke(this);
+
+                MonoBehaviour.Destroy(_selfObject);
+            }
         }
 
         private void TriggerEnteredEventHandler(Collider target)
@@ -84,6 +102,14 @@ namespace Balthazariy.Objects.Base
         private void OnCollisionEnterEventHandler(Collision target)
         {
             Dispose();
+        }
+
+        private void InitChancing()
+        {
+            float chance = UnityEngine.Random.Range(0.0f, 100f);
+
+            if (chance >= _chanceToNothing)
+                return;
         }
     }
 }
