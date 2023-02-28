@@ -24,11 +24,12 @@ namespace Balthazariy.ArenaBattle.Shooting.Base
 
         private bool _isAlive;
 
-        public const float BULLET_SPEED = 50f;
+        public const float BULLET_SPEED = 5f;
 
-        public ShootBase(Transform parent, GameObject prefab)
+        public ShootBase(Transform parent, GameObject prefab, Vector3 spawnPosition)
         {
             _selfObject = MonoBehaviour.Instantiate(prefab, parent);
+            _selftTransform = _selfObject.transform;
 
             _modelObject = _selfObject.transform.Find("Model").gameObject;
 
@@ -37,7 +38,10 @@ namespace Balthazariy.ArenaBattle.Shooting.Base
             _behaviourHandler = _selfObject.GetComponent<OnBehaviourHandler>();
             _meshRenderer = _modelObject.GetComponent<MeshRenderer>();
 
+            _selfObject.transform.position = spawnPosition;
+
             _behaviourHandler.TriggerEntered += OnTriggerEnterEventHandler;
+            _behaviourHandler.CollisionEnter += OnCollisionEnterEventHandler;
 
             _isAlive = true;
         }
@@ -63,14 +67,19 @@ namespace Balthazariy.ArenaBattle.Shooting.Base
 
         private void OnTriggerEnterEventHandler(Collider target)
         {
-            BulletDestroyEvent?.Invoke(_currentPosition);
+            Dispose();
+        }
 
+        private void OnCollisionEnterEventHandler(Collision target)
+        {
             Dispose();
         }
 
         private void Dispose()
         {
             _isAlive = false;
+
+            BulletDestroyEvent?.Invoke(_currentPosition);
 
             _behaviourHandler.TriggerEntered -= OnTriggerEnterEventHandler;
 

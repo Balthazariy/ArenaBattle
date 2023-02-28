@@ -1,7 +1,7 @@
 using Balthazariy.ArenaBattle.Factories;
 using UnityEngine;
-using UnityEngine.InputSystem;
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
+using UnityEngine.InputSystem;
 #endif
 
 namespace Balthazariy.ArenaBattle.Player
@@ -10,14 +10,17 @@ namespace Balthazariy.ArenaBattle.Player
     {
         [SerializeField] private FactoryController _factoryController;
 
+
+        private void Start()
+        {
+        }
+
         private void Update()
         {
-
         }
 
         private void OnMouseClick(InputValue value)
         {
-            Debug.Log(123);
             _factoryController.CreateShoot(Factories.Shooting.ShootType.Player);
         }
     }

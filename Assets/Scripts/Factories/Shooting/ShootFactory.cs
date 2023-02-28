@@ -1,11 +1,14 @@
 using Balthazariy.ArenaBattle.Shooting;
+using Balthazariy.ArenaBattle.Shooting.Base;
 using UnityEngine;
 
 namespace Balthazariy.ArenaBattle.Factories.Shooting
 {
     public class ShootFactory
     {
-        private PlayerShoot _playerShoot;
+
+
+        private ShootBase _playerShoot;
 
         public ShootFactory()
         {
@@ -31,12 +34,15 @@ namespace Balthazariy.ArenaBattle.Factories.Shooting
         public void InitShootByType(ShootType type)
         {
             var bulletPrefab = Resources.Load<GameObject>("Prefabs/BulletBase");
+            var bulletParent = GameObject.Find("[GAMEPLAY]/Objects").transform;
+            var startPosition = Vector3.zero;
 
             switch (type)
             {
                 case ShootType.Player:
                     {
-                        _playerShoot = new PlayerShoot(GameObject.Find("[GAMEPLAY]/Objects").transform, bulletPrefab);
+                        startPosition = GameObject.Find("[GAMEPLAY]/PlayerCapsule/PlayerCameraRoot/Shoot_Pivot").transform.position;
+                        _playerShoot = new PlayerShoot(bulletParent, bulletPrefab, startPosition);
                     }
                     break;
                 case ShootType.BlueEnemy:

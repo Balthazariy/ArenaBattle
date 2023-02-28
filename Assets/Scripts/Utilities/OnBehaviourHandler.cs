@@ -39,6 +39,8 @@ namespace Balthazariy.Utilities
 
         public event Action<string> OnAnimationStringEvent;
 
+        public event Action<Collision> CollisionEnter;
+
         public void OnBeginDrag(PointerEventData eventData)
         {
             DragBegan?.Invoke(eventData, gameObject);
@@ -117,6 +119,11 @@ namespace Balthazariy.Utilities
         private void OnAnimationEvent(string parameter)
         {
             OnAnimationStringEvent?.Invoke(parameter);
+        }
+
+        private void OnCollisionEnterEvent(Collision collision)
+        {
+            CollisionEnter?.Invoke(collision);
         }
     }
 }

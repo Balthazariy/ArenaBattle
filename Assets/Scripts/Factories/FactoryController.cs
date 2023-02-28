@@ -24,7 +24,7 @@ namespace Balthazariy.ArenaBattle.Factories
 
         private void Update()
         {
-            if (_shootFactory != null)
+            if (_shootFactory == null)
                 return;
 
             _shootFactory.Update();
@@ -32,7 +32,7 @@ namespace Balthazariy.ArenaBattle.Factories
 
         private void FixedUpdate()
         {
-            if (_shootFactory != null)
+            if (_shootFactory == null)
                 return;
 
             _shootFactory.FixedUpdate();
