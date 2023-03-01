@@ -62,7 +62,7 @@ namespace Balthazariy.Players
                 var rotation = _cameraRoot.localEulerAngles + transform.localEulerAngles;
                 var startPosition = _bulletStartPosition.position;
 
-                BulletBase bullet = new PlayerBullet(_bulletPrefab, _bulletParent, 30, rotation, startPosition);
+                BulletBase bullet = new PlayerBullet(_bulletPrefab, _bulletParent, 50, rotation, startPosition);
 
                 bullet.BulletDestroyEvent += OnBulletDestroyEventHandler;
 

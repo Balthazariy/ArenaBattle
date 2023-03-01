@@ -36,12 +36,12 @@ namespace StarterAssets
 
         public void OnJump(InputValue value)
         {
-            JumpInput(value.isPressed);
+            //JumpInput(value.isPressed);
         }
 
         public void OnSprint(InputValue value)
         {
-            SprintInput(value.isPressed);
+            //SprintInput(value.isPressed);
         }
 #endif
 
@@ -58,12 +58,12 @@ namespace StarterAssets
 
         public void JumpInput(bool newJumpState)
         {
-            jump = newJumpState;
+            //jump = newJumpState;
         }
 
         public void SprintInput(bool newSprintState)
         {
-            sprint = newSprintState;
+            //sprint = newSprintState;
         }
 
         private void OnApplicationFocus(bool hasFocus)
