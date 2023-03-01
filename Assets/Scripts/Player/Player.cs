@@ -1,6 +1,7 @@
 using Balthazariy.Objects.Base;
 using Balthazariy.Objects.Bullets;
 using Balthazariy.Utilities;
+using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -16,7 +17,7 @@ namespace Balthazariy.Players
         [SerializeField] private OnBehaviourHandler _onBehaviourHandler;
         [SerializeField] private TeleportPoints _teleportPoints;
 
-        private GameObject _selfObject;
+        [SerializeField] private GameObject _selfObject;
 
         private List<BulletBase> _bullets;
 
@@ -27,8 +28,6 @@ namespace Balthazariy.Players
         private void Start()
         {
             _bullets = new List<BulletBase>();
-
-            _selfObject = this.gameObject;
 
             _onBehaviourHandler.TriggerEntered += OnColliderEnterEventHandler;
         }
@@ -82,14 +81,12 @@ namespace Balthazariy.Players
         private void OnColliderEnterEventHandler(Collider target)
         {
             if (target.transform.tag == "Zone")
-            {
                 TeleportToRandomPointOfMap();
-            }
         }
 
         private void TeleportToRandomPointOfMap()
         {
-            _selfObject.transform.localPosition = _teleportPoints.GetRandomPoint();
+            _selfObject.transform.DOMove(_teleportPoints.GetRandomPoint(), 0.3f);
         }
     }
 }

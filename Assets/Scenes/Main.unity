@@ -2764,6 +2764,7 @@ MonoBehaviour:
   _bulletStartPosition: {fileID: 1739351468}
   _onBehaviourHandler: {fileID: 893326855}
   _teleportPoints: {fileID: 811454158}
+  _selfObject: {fileID: 893326847}
 --- !u!114 &893326850
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5047,7 +5048,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1988352415
 RectTransform:
   m_ObjectHideFlags: 0

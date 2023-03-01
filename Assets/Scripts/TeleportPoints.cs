@@ -12,17 +12,9 @@ namespace Balthazariy
             _points = new List<Transform>();
 
             for (int i = 0; i < transform.childCount; i++)
-            {
                 _points.Add(transform.GetChild(i));
-            }
         }
 
-        public Vector3 GetRandomPoint()
-        {
-            int index = UnityEngine.Random.Range(0, _points.Count);
-            Debug.Log(index + " " + _points[index].name);
-            Debug.Log(_points[index].position + " " + _points[index].localPosition);
-            return _points[index].localPosition;
-        }
+        public Vector3 GetRandomPoint() => _points[UnityEngine.Random.Range(0, _points.Count)].localPosition;
     }
 }
