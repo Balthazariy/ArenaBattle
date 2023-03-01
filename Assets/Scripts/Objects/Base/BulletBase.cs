@@ -19,7 +19,7 @@ namespace Balthazariy.Objects.Base
         protected GameObject _modelObject;
         protected MeshRenderer _modelMeshRenderer;
 
-        protected const float BULLET_SPEED = 1.0f;
+        protected const float BULLET_SPEED = 4.0f;
 
         private bool _isAlive;
 
@@ -30,9 +30,8 @@ namespace Balthazariy.Objects.Base
 
         private int _bulletDamage;
         private int _bulletHealth;
-        private const float _chanceToGetSecongLife = 25.0f;
-        private const float _chanceToRikochet = 25.0f;
         private const float _chanceToNothing = 50.0f;
+        private bool _isRicochet;
 
         public BulletBase(GameObject prefab, Transform parent, int bulletDamage, Vector3 startPosition)
         {
@@ -69,7 +68,7 @@ namespace Balthazariy.Objects.Base
             _currentLiveTime -= Time.deltaTime;
 
             if (_currentLiveTime <= 0)
-                Dispose();
+                Dispose(false);
         }
 
         public virtual void FixedUpdate()
@@ -78,38 +77,58 @@ namespace Balthazariy.Objects.Base
                 return;
         }
 
-        public void Dispose()
+        public void Dispose(bool isEnemy)
         {
-            _isAlive = false;
-
-            --_bulletHealth;
-
-            if (_bulletHealth <= 0)
+            if (isEnemy)
             {
-                _onBehaviourHandler.TriggerEntered -= TriggerEnteredEventHandler;
+                --_bulletHealth;
 
-                BulletDestroyEvent?.Invoke(this);
-
-                MonoBehaviour.Destroy(_selfObject);
+                if (_bulletHealth <= 0)
+                    Dead();
             }
+            else
+                Dead();
         }
 
         private void TriggerEnteredEventHandler(Collider target)
         {
-            Dispose();
+            Dispose(target.transform.tag != "Ground");
         }
 
         private void OnCollisionEnterEventHandler(Collision target)
         {
-            Dispose();
+            Dispose(target.transform.tag != "Ground");
+        }
+
+        private void Dead()
+        {
+            _isAlive = false;
+
+            _onBehaviourHandler.TriggerEntered -= TriggerEnteredEventHandler;
+            _onBehaviourHandler.CollisionEnter -= OnCollisionEnterEventHandler;
+
+            BulletDestroyEvent?.Invoke(this);
+
+            MonoBehaviour.Destroy(_selfObject);
         }
 
         private void InitChancing()
         {
-            float chance = UnityEngine.Random.Range(0.0f, 100f);
+            int chance = UnityEngine.Random.Range(0, 100);
 
             if (chance >= _chanceToNothing)
                 return;
+
+            int healthOrRicochetChance = UnityEngine.Random.Range(0, 100);
+
+            if (healthOrRicochetChance > 0 && healthOrRicochetChance <= 50)
+            {
+                ++_bulletHealth;
+            }
+            else if (healthOrRicochetChance > 50 && healthOrRicochetChance <= 100)
+            {
+                _isRicochet = true;
+            }
         }
     }
 }

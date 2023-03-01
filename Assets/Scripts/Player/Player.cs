@@ -1,10 +1,11 @@
 using Balthazariy.Objects.Base;
 using Balthazariy.Objects.Bullets;
+using Balthazariy.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Balthazariy.Player
+namespace Balthazariy.Players
 {
     public class Player : MonoBehaviour
     {
@@ -12,6 +13,10 @@ namespace Balthazariy.Player
         [SerializeField] private Transform _bulletParent;
         [SerializeField] private Transform _cameraRoot;
         [SerializeField] private Transform _bulletStartPosition;
+        [SerializeField] private OnBehaviourHandler _onBehaviourHandler;
+        [SerializeField] private TeleportPoints _teleportPoints;
+
+        private GameObject _selfObject;
 
         private List<BulletBase> _bullets;
 
@@ -22,6 +27,10 @@ namespace Balthazariy.Player
         private void Start()
         {
             _bullets = new List<BulletBase>();
+
+            _selfObject = this.gameObject;
+
+            _onBehaviourHandler.TriggerEntered += OnColliderEnterEventHandler;
         }
 
         private void Update()
@@ -68,6 +77,19 @@ namespace Balthazariy.Player
         private void OnBulletDestroyEventHandler(BulletBase currentBullet)
         {
             _bullets.Remove(currentBullet);
+        }
+
+        private void OnColliderEnterEventHandler(Collider target)
+        {
+            if (target.transform.tag == "Zone")
+            {
+                TeleportToRandomPointOfMap();
+            }
+        }
+
+        private void TeleportToRandomPointOfMap()
+        {
+            _selfObject.transform.localPosition = _teleportPoints.GetRandomPoint();
         }
     }
 }
