@@ -1,12 +1,12 @@
-using Balthazariy.Objects.Base;
-using Balthazariy.Objects.Bullets;
-using Balthazariy.Utilities;
+using Balthazariy.ArenaBattle.Objects.Base;
+using Balthazariy.ArenaBattle.Objects.Bullets;
+using Balthazariy.ArenaBattle.Utilities;
 using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Balthazariy.Players
+namespace Balthazariy.ArenaBattle.Players
 {
     public class Player : MonoBehaviour
     {

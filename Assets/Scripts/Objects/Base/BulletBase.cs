@@ -1,8 +1,8 @@
-using Balthazariy.Utilities;
+using Balthazariy.ArenaBattle.Utilities;
 using System;
 using UnityEngine;
 
-namespace Balthazariy.Objects.Base
+namespace Balthazariy.ArenaBattle.Objects.Base
 {
     public class BulletBase
     {

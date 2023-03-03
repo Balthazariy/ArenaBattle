@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Balthazariy
+namespace Balthazariy.ArenaBattle
 {
     public class TeleportPoints : MonoBehaviour
     {

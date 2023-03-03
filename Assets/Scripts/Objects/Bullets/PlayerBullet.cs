@@ -1,7 +1,7 @@
-using Balthazariy.Objects.Base;
+using Balthazariy.ArenaBattle.Objects.Base;
 using UnityEngine;
 
-namespace Balthazariy.Objects.Bullets
+namespace Balthazariy.ArenaBattle.Objects.Bullets
 {
     public class PlayerBullet : BulletBase
     {
