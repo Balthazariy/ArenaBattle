@@ -55,7 +55,7 @@ namespace Balthazariy.Players
                 _bullets[i].FixedUpdate();
         }
 
-        public void OnMouseClick(InputValue value)
+        public void OnFire(InputValue value)
         {
             if (!_isShooted)
             {

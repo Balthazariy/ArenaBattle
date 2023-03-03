@@ -10,8 +10,8 @@ namespace StarterAssets
         [Header("Character Input Values")]
         public Vector2 move;
         public Vector2 look;
-        public bool jump;
-        public bool sprint;
+        public bool shoot;
+        public bool ulta;
 
         [Header("Movement Settings")]
         public bool analogMovement;
@@ -34,14 +34,14 @@ namespace StarterAssets
             }
         }
 
-        public void OnJump(InputValue value)
+        public void OnFire(InputValue value)
         {
-            //JumpInput(value.isPressed);
+            ShootInput(value.isPressed);
         }
 
-        public void OnSprint(InputValue value)
+        public void OnUlta(InputValue value)
         {
-            //SprintInput(value.isPressed);
+            UltaInput(value.isPressed);
         }
 #endif
 
@@ -56,14 +56,14 @@ namespace StarterAssets
             look = newLookDirection;
         }
 
-        public void JumpInput(bool newJumpState)
+        public void ShootInput(bool newShootState)
         {
-            //jump = newJumpState;
+            shoot = newShootState;
         }
 
-        public void SprintInput(bool newSprintState)
+        public void UltaInput(bool newUltaState)
         {
-            //sprint = newSprintState;
+            ulta = newUltaState;
         }
 
         private void OnApplicationFocus(bool hasFocus)

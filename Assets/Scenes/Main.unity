@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.38515937, g: 0.4724939, b: 0.61858577, a: 1}
+  m_IndirectSpecularColor: {r: 0.38479954, g: 0.47214615, b: 0.6183436, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3083,8 +3083,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   move: {x: 0, y: 0}
   look: {x: 0, y: 0}
-  jump: 0
-  sprint: 0
+  shoot: 0
+  ulta: 0
   analogMovement: 0
   cursorLocked: 1
   cursorInputForLook: 1
@@ -5180,7 +5180,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1594004250}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1594004250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6097,6 +6109,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1988352415}
   - component: {fileID: 1988352416}
+  - component: {fileID: 1988352417}
   m_Layer: 5
   m_Name: MainPage
   m_TagString: Untagged
@@ -6145,6 +6158,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 901182334643ba1438a25accc6bd0c79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerInput: {fileID: 893326850}
+--- !u!114 &1988352417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1988352414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a300d010f57451488aa99000126fbd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  starterAssetsInputs: {fileID: 893326851}
 --- !u!1 &2012407429
 GameObject:
   m_ObjectHideFlags: 0
@@ -6392,7 +6419,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3928403181377785079}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3039502967365764408
 GameObject:
   m_ObjectHideFlags: 0
@@ -6498,9 +6537,9 @@ MonoBehaviour:
   joystickOutputEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1988352414}
-        m_TargetAssemblyTypeName: StarterAssets.UICanvasControllerInput, Assembly-CSharp
-        m_MethodName: 
+      - m_Target: {fileID: 1988352417}
+        m_TargetAssemblyTypeName: StarterAssets.UICanvasControllerInput, Assembly-CSharp-firstpass
+        m_MethodName: VirtualMoveInput
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7056,9 +7095,9 @@ MonoBehaviour:
   joystickOutputEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1988352414}
-        m_TargetAssemblyTypeName: StarterAssets.UICanvasControllerInput, Assembly-CSharp
-        m_MethodName: 
+      - m_Target: {fileID: 1988352417}
+        m_TargetAssemblyTypeName: StarterAssets.UICanvasControllerInput, Assembly-CSharp-firstpass
+        m_MethodName: VirtualLookInput
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
