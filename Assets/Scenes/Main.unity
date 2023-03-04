@@ -1438,6 +1438,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfce97a8803408448932dcd0d86377ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _spawnPointParent: {fileID: 396826786}
   _spawnPoints:
   - {fileID: 1497419528}
   - {fileID: 1185464817}
@@ -1448,8 +1449,8 @@ MonoBehaviour:
   - {fileID: 1178254430}
   - {fileID: 247506434}
   - {fileID: 35218793}
-  _enemyParent: {fileID: 0}
-  _player: {fileID: 0}
+  _enemyParent: {fileID: 377469366}
+  _player: {fileID: 893326849}
 --- !u!1 &382907425
 GameObject:
   m_ObjectHideFlags: 0
