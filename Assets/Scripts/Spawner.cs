@@ -1,5 +1,4 @@
 using Balthazariy.ArenaBattle.Objects.Base;
-using Balthazariy.ArenaBattle.Objects.Enemies;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -64,9 +63,9 @@ namespace Balthazariy.ArenaBattle
             EnemyBase enemy = null;
 
             if (chanceToBlueEnemy <= 75.0f)
-                enemy = new RedEnemy();
+                //enemy = new RedEnemy();
             else if (chanceToBlueEnemy > 75.0f)
-                Debug.Log("Blue enemy spawned");
+                        Debug.Log("Blue enemy spawned");
             //enemy = null;
 
             _spawnedEnemies.Add(enemy);
