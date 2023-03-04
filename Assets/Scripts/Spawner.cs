@@ -62,10 +62,10 @@ namespace Balthazariy.ArenaBattle
 
             EnemyBase enemy = null;
 
-            if (chanceToBlueEnemy <= 75.0f)
-                //enemy = new RedEnemy();
-            else if (chanceToBlueEnemy > 75.0f)
-                        Debug.Log("Blue enemy spawned");
+            //if (chanceToBlueEnemy <= 75.0f)
+            //    //enemy = new RedEnemy();
+            //else if (chanceToBlueEnemy > 75.0f)
+            //            Debug.Log("Blue enemy spawned");
             //enemy = null;
 
             _spawnedEnemies.Add(enemy);
