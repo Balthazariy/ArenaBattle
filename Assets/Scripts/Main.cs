@@ -11,7 +11,7 @@ namespace Balthazariy.ArenaBattle
 
         public bool GameplayStarted;
 
-        private const float _startGameTimer = 5f;
+        private const float _startGameTimer = 3f;
         private float _currentStartGameTimer;
         private bool _startCountdown;
 

@@ -34,15 +34,15 @@ namespace StarterAssets
             }
         }
 
-        //public void OnFire(InputValue value)
-        //{
-        //    ShootInput(value.isPressed);
-        //}
+        public void OnFire(InputValue value)
+        {
+            ShootInput(value.isPressed);
+        }
 
-        //public void OnUlta(InputValue value)
-        //{
-        //    UltaInput(value.isPressed);
-        //}
+        public void OnUlta(InputValue value)
+        {
+            UltaInput(value.isPressed);
+        }
 #endif
 
 
@@ -56,15 +56,15 @@ namespace StarterAssets
             look = newLookDirection;
         }
 
-        //public void ShootInput(bool newShootState)
-        //{
-        //    shoot = newShootState;
-        //}
+        public void ShootInput(bool newShootState)
+        {
+            shoot = newShootState;
+        }
 
-        //public void UltaInput(bool newUltaState)
-        //{
-        //    ulta = newUltaState;
-        //}
+        public void UltaInput(bool newUltaState)
+        {
+            ulta = newUltaState;
+        }
 
         private void OnApplicationFocus(bool hasFocus)
         {

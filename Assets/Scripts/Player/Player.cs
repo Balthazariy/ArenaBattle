@@ -11,14 +11,16 @@ namespace Balthazariy.ArenaBattle.Players
 {
     public class Player : MonoBehaviour
     {
+        [SerializeField] private GameObject _selfObject;
         [SerializeField] private GameObject _bulletPrefab;
+
         [SerializeField] private Transform _bulletParent;
         [SerializeField] private Transform _cameraRoot;
         [SerializeField] private Transform _bulletStartPosition;
-        [SerializeField] private OnBehaviourHandler _onBehaviourHandler;
-        [SerializeField] private TeleportPoints _teleportPoints;
 
-        [SerializeField] private GameObject _selfObject;
+        [SerializeField] private OnBehaviourHandler _onBehaviourHandler;
+
+        [SerializeField] private TeleportPoints _teleportPoints;
 
         [SerializeField] FirstPersonController _firstPersonController;
 
@@ -26,7 +28,17 @@ namespace Balthazariy.ArenaBattle.Players
 
         private const float _shootCountdownTimer = 0.5f;
         private float _currentShootCountdownTimer;
+
+        private int _health;
+
         private bool _isShooted;
+        private bool _isAlive;
+
+        public int Health
+        {
+            get => _health;
+            private set => _health = value;
+        }
 
         private void Awake()
         {
@@ -34,6 +46,7 @@ namespace Balthazariy.ArenaBattle.Players
 
             _firstPersonController.enabled = false;
             _isShooted = true;
+            _isAlive = false;
 
             _onBehaviourHandler.TriggerEntered += OnColliderEnterEventHandler;
             Main.Instance.StartGameplayEvent += StartGameplayEventHandler;
@@ -42,6 +55,9 @@ namespace Balthazariy.ArenaBattle.Players
         private void Update()
         {
             if (!Main.Instance.GameplayStarted)
+                return;
+
+            if (!_isAlive)
                 return;
 
             for (int i = 0; i < _bullets.Count; i++)
@@ -67,6 +83,9 @@ namespace Balthazariy.ArenaBattle.Players
 
         public void OnFire(InputValue value)
         {
+            if (!_isAlive)
+                return;
+
             if (!_isShooted)
             {
                 var rotation = _cameraRoot.localEulerAngles + transform.localEulerAngles;
@@ -86,6 +105,7 @@ namespace Balthazariy.ArenaBattle.Players
         private void StartGameplayEventHandler()
         {
             _firstPersonController.enabled = true;
+            _isAlive = true;
         }
 
         private void OnBulletDestroyEventHandler(BulletBase currentBullet)
@@ -103,5 +123,19 @@ namespace Balthazariy.ArenaBattle.Players
         {
             _selfObject.transform.DOMove(_teleportPoints.GetRandomPoint(), 0.3f);
         }
+
+        public void ApplyDamageAndCheckIsAlive(int damage)
+        {
+            ApplyDamage(damage);
+
+            _isAlive = IsAlive();
+        }
+
+        private void ApplyDamage(int damage) => _health -= damage;
+
+        private bool IsAlive() => _health <= 0;
+
+        public Vector3 GetPlayerPosition() => _selfObject.transform.localPosition;
+
     }
 }

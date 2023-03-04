@@ -14,12 +14,15 @@ namespace Balthazariy.ArenaBattle
         [Space(5)]
         [SerializeField] private Transform _enemyParent;
         [SerializeField] private Players.Player _player;
+        [SerializeField] private float _decreaseSpawnTimeModificator = 0.1f;
 
         private List<Transform> _spawnPoints;
 
         private float _spawnTime = 5.0f;
         private float _currentSpawnTIme;
         private bool _isSpawning;
+
+
 
         private void Awake()
         {
@@ -49,6 +52,7 @@ namespace Balthazariy.ArenaBattle
 
                 if (_currentSpawnTIme <= 0)
                 {
+                    _spawnTime -= _decreaseSpawnTimeModificator;
                     _currentSpawnTIme = _spawnTime;
                     SpawnEnemy();
                 }
@@ -73,10 +77,8 @@ namespace Balthazariy.ArenaBattle
             if (chanceToBlueEnemy <= 75.0f)
                 enemy = new RedEnemy(_enemyParent, GetSpawnPointPosition(), _player, 10f, 1f, 1f, data.GetEnemyByType(EnemyType.Red));
             else if (chanceToBlueEnemy > 75.0f)
-            {
-                Debug.Log("Blue enemy spawned");
-                enemy = new RedEnemy(_enemyParent, GetSpawnPointPosition(), _player, 10f, 1f, 1f, data.GetEnemyByType(EnemyType.Red));
-            }
+                enemy = new BlueEnemy(_enemyParent, GetSpawnPointPosition(), _player, 10f, 1f, 1f, data.GetEnemyByType(EnemyType.Blue));
+
             _spawnedEnemies.Add(enemy);
         }
 

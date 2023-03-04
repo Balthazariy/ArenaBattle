@@ -130,5 +130,7 @@ namespace Balthazariy.ArenaBattle.Objects.Base
                 _isRicochet = true;
             }
         }
+
+        public int GetBulletDamage() => _bulletDamage;
     }
 }

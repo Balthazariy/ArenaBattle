@@ -87,17 +87,21 @@ namespace Balthazariy.ArenaBattle.Objects.Base
                 return;
         }
 
+        public virtual void Hit()
+        {
+            _player.ApplyDamageAndCheckIsAlive(_damage);
+        }
+
         private void TriggerEnteredEventHandler(Collider target)
         {
-
+            InterractWithPlayerBullet(target);
         }
 
         private void OnCollisionEnterEventHandler(Collision target)
         {
-
         }
 
-        private void Dispose()
+        public void Dispose()
         {
             _isAlive = false;
 
@@ -107,5 +111,28 @@ namespace Balthazariy.ArenaBattle.Objects.Base
 
             MonoBehaviour.Destroy(_selfObject);
         }
+
+        public void ApplyDamageAndCheckIsAlive(int damage)
+        {
+            ApplyDamage(damage);
+
+            if (IsAlive())
+                Dispose();
+        }
+
+        private void InterractWithPlayerBullet(Collider target)
+        {
+            Debug.Log("Interract with - " + target.transform.name);
+            if (target.transform.tag == "PlayerBullet")
+            {
+                BulletBase playerBullet = target.transform.GetComponent<BulletBase>();
+                ApplyDamageAndCheckIsAlive(playerBullet.GetBulletDamage());
+                Debug.Log(_health);
+            }
+        }
+
+        private void ApplyDamage(int damage) => _health -= damage;
+
+        private bool IsAlive() => _health <= 0;
     }
 }
