@@ -1,3 +1,4 @@
+using Balthazariy.ArenaBattle.Models;
 using Balthazariy.ArenaBattle.Players;
 using Balthazariy.ArenaBattle.Utilities;
 using System;
@@ -18,6 +19,8 @@ namespace Balthazariy.ArenaBattle.Objects.Base
         protected GameObject _modelObject;
         protected MeshRenderer _modelMeshRenderer;
 
+        protected Enemy _data;
+
         protected Player _player;
 
         private OnBehaviourHandler _onBehaviourHandler;
@@ -37,17 +40,17 @@ namespace Balthazariy.ArenaBattle.Objects.Base
         private float _currenattackCountdownTimer;
         private bool _isAttacked;
 
-        public EnemyBase(GameObject prefab,
-                         Transform parent,
+        public EnemyBase(Transform parent,
                          Vector3 startPosition,
                          Player player,
-                         int health,
-                         int damage,
                          float moveSpeed,
                          float rotatingSpeed,
-                         float attackCountdownTime)
+                         float attackCountdownTime,
+                         Enemy data)
         {
-            _selfObject = MonoBehaviour.Instantiate(prefab, parent);
+            _data = data;
+
+            _selfObject = MonoBehaviour.Instantiate(_data.prefab, parent);
             _selfTransform = _selfObject.transform;
 
             _rigidbody = _selfObject.GetComponent<Rigidbody>();
@@ -63,8 +66,8 @@ namespace Balthazariy.ArenaBattle.Objects.Base
             _selfTransform.position = startPosition;
 
             _player = player;
-            _health = health;
-            _damage = damage;
+            _health = _data.health;
+            _damage = _data.damage;
             _moveSpeed = moveSpeed;
             _rotatingSpeed = rotatingSpeed;
             _attackCountdownTimer = attackCountdownTime;

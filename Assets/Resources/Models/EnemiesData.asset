@@ -17,11 +17,11 @@ MonoBehaviour:
     type: 0
     health: 0
     damage: 0
-  - prefab: {fileID: 0}
+  - prefab: {fileID: 8334741664096528121, guid: 4bce116e9b0d0754491873a42cc584d8, type: 3}
     type: 1
     health: 50
     damage: 15
-  - prefab: {fileID: 0}
+  - prefab: {fileID: 5694512032052116168, guid: ffae05b5ee6c37b429af41989ae7c43b, type: 3}
     type: 2
     health: 100
     damage: 25
