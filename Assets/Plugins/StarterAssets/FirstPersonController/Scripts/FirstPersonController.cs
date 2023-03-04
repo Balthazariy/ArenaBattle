@@ -110,6 +110,11 @@ namespace StarterAssets
             _fallTimeoutDelta = FallTimeout;
         }
 
+        private void StartGameplayEventHandler()
+        {
+
+        }
+
         private void Update()
         {
             Move();

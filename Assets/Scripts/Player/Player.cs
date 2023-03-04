@@ -2,6 +2,7 @@ using Balthazariy.ArenaBattle.Objects.Base;
 using Balthazariy.ArenaBattle.Objects.Bullets;
 using Balthazariy.ArenaBattle.Utilities;
 using DG.Tweening;
+using StarterAssets;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -19,21 +20,30 @@ namespace Balthazariy.ArenaBattle.Players
 
         [SerializeField] private GameObject _selfObject;
 
+        [SerializeField] FirstPersonController _firstPersonController;
+
         private List<BulletBase> _bullets;
 
         private const float _shootCountdownTimer = 0.5f;
         private float _currentShootCountdownTimer;
         private bool _isShooted;
 
-        private void Start()
+        private void Awake()
         {
             _bullets = new List<BulletBase>();
 
+            _firstPersonController.enabled = false;
+            _isShooted = true;
+
             _onBehaviourHandler.TriggerEntered += OnColliderEnterEventHandler;
+            Main.Instance.StartGameplayEvent += StartGameplayEventHandler;
         }
 
         private void Update()
         {
+            if (!Main.Instance.GameplayStarted)
+                return;
+
             for (int i = 0; i < _bullets.Count; i++)
                 _bullets[i].Update();
 
@@ -71,6 +81,11 @@ namespace Balthazariy.ArenaBattle.Players
                 _currentShootCountdownTimer = _shootCountdownTimer;
                 _isShooted = true;
             }
+        }
+
+        private void StartGameplayEventHandler()
+        {
+            _firstPersonController.enabled = true;
         }
 
         private void OnBulletDestroyEventHandler(BulletBase currentBullet)
