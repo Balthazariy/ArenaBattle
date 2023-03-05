@@ -77,6 +77,12 @@ namespace Balthazariy.ArenaBattle.Players
 
         private void FixedUpdate()
         {
+            if (!Main.Instance.GameplayStarted)
+                return;
+
+            if (!_isAlive)
+                return;
+
             for (int i = 0; i < _bullets.Count; i++)
                 _bullets[i].FixedUpdate();
         }
@@ -92,7 +98,6 @@ namespace Balthazariy.ArenaBattle.Players
                 var startPosition = _bulletStartPosition.position;
 
                 BulletBase bullet = new PlayerBullet(_bulletPrefab, _bulletParent, 50, rotation, startPosition);
-
                 bullet.BulletDestroyEvent += OnBulletDestroyEventHandler;
 
                 _bullets.Add(bullet);
@@ -129,6 +134,15 @@ namespace Balthazariy.ArenaBattle.Players
             ApplyDamage(damage);
 
             _isAlive = IsAlive();
+        }
+
+        public BulletBase GetBulletByName(string name)
+        {
+            for (int i = 0; i < _bullets.Count; i++)
+                if (_bullets[i].bulletName == name)
+                    return _bullets[i];
+
+            return null;
         }
 
         private void ApplyDamage(int damage) => _health -= damage;

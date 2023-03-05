@@ -21,6 +21,8 @@ namespace Balthazariy.ArenaBattle.Objects.Base
 
         protected const float BULLET_SPEED = 4.0f;
 
+        public string bulletName;
+
         private bool _isAlive;
 
         #region Bullet Live Timer
@@ -33,7 +35,7 @@ namespace Balthazariy.ArenaBattle.Objects.Base
         private const float _chanceToNothing = 50.0f;
         private bool _isRicochet;
 
-        public BulletBase(GameObject prefab, Transform parent, int bulletDamage, Vector3 startPosition)
+        public BulletBase(GameObject prefab, Transform parent, int bulletDamage, Vector3 playerRotation, Vector3 startPosition)
         {
             _selfObject = MonoBehaviour.Instantiate(prefab, parent);
             _selfTransform = _selfObject.transform;
@@ -48,6 +50,9 @@ namespace Balthazariy.ArenaBattle.Objects.Base
             _onBehaviourHandler.TriggerEntered += TriggerEnteredEventHandler;
             _onBehaviourHandler.CollisionEnter += OnCollisionEnterEventHandler;
 
+            _selfObject.SetActive(false);
+
+            _selfTransform.localEulerAngles = playerRotation;
             _selfTransform.position = startPosition;
 
             _currentLiveTime = LIVE_TIME;
@@ -55,7 +60,12 @@ namespace Balthazariy.ArenaBattle.Objects.Base
             _bulletDamage = bulletDamage;
             _bulletHealth = 1;
 
+            bulletName = "Bullet[" + UnityEngine.Random.Range(0, 9999).ToString() + "]";
+            _selfObject.name = bulletName;
+
             InitChancing();
+
+            _selfObject.SetActive(true);
 
             _isAlive = true;
         }
@@ -75,6 +85,8 @@ namespace Balthazariy.ArenaBattle.Objects.Base
         {
             if (!_isAlive)
                 return;
+
+            _rigidbody.AddRelativeForce(Vector3.forward * BULLET_SPEED, ForceMode.Impulse);
         }
 
         public void Dispose(bool isEnemy)
@@ -92,11 +104,15 @@ namespace Balthazariy.ArenaBattle.Objects.Base
 
         private void TriggerEnteredEventHandler(Collider target)
         {
+            if (!_isAlive)
+                return;
             Dispose(target.transform.tag != "Ground");
         }
 
         private void OnCollisionEnterEventHandler(Collision target)
         {
+            if (!_isAlive)
+                return;
             Dispose(target.transform.tag != "Ground");
         }
 

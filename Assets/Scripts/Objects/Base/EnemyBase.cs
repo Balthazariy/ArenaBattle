@@ -122,12 +122,10 @@ namespace Balthazariy.ArenaBattle.Objects.Base
 
         private void InterractWithPlayerBullet(Collider target)
         {
-            Debug.Log("Interract with - " + target.transform.name);
             if (target.transform.tag == "PlayerBullet")
             {
-                BulletBase playerBullet = target.transform.GetComponent<BulletBase>();
+                BulletBase playerBullet = _player.GetBulletByName(target.name);
                 ApplyDamageAndCheckIsAlive(playerBullet.GetBulletDamage());
-                Debug.Log(_health);
             }
         }
 
