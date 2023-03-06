@@ -38,6 +38,10 @@ namespace Balthazariy.ArenaBattle.Objects.Base
         public BulletBase(GameObject prefab, Transform parent, int bulletDamage, Vector3 playerRotation, Vector3 startPosition)
         {
             _selfObject = MonoBehaviour.Instantiate(prefab, parent);
+
+            bulletName = "Bullet[" + UnityEngine.Random.Range(0, 9999).ToString() + "]";
+            _selfObject.name = bulletName;
+
             _selfTransform = _selfObject.transform;
 
             _rigidbody = _selfObject.GetComponent<Rigidbody>();
@@ -59,9 +63,6 @@ namespace Balthazariy.ArenaBattle.Objects.Base
 
             _bulletDamage = bulletDamage;
             _bulletHealth = 1;
-
-            bulletName = "Bullet[" + UnityEngine.Random.Range(0, 9999).ToString() + "]";
-            _selfObject.name = bulletName;
 
             InitChancing();
 
@@ -127,6 +128,7 @@ namespace Balthazariy.ArenaBattle.Objects.Base
 
             MonoBehaviour.Destroy(_selfObject);
         }
+
 
         private void InitChancing()
         {

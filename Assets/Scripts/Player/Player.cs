@@ -3,6 +3,7 @@ using Balthazariy.ArenaBattle.Objects.Bullets;
 using Balthazariy.ArenaBattle.Utilities;
 using DG.Tweening;
 using StarterAssets;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -139,7 +140,7 @@ namespace Balthazariy.ArenaBattle.Players
         public BulletBase GetBulletByName(string name)
         {
             for (int i = 0; i < _bullets.Count; i++)
-                if (_bullets[i].bulletName == name)
+                if (String.Compare(_bullets[i].bulletName, name) == 1)
                     return _bullets[i];
 
             return null;
