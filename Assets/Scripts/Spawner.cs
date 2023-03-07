@@ -11,6 +11,8 @@ namespace Balthazariy.ArenaBattle
     {
         public event Action<int> GetEnergyEvent;
 
+        public static Spawner Instance;
+
         [Header("General")]
         [SerializeField] private Transform _spawnPointParent;
         [SerializeField] private List<EnemyBase> _spawnedEnemies;
@@ -25,9 +27,13 @@ namespace Balthazariy.ArenaBattle
         private float _currentSpawnTIme;
         private bool _isSpawning;
 
-
-
         private void Awake()
+        {
+            if (Instance == null)
+                Instance = this;
+        }
+
+        private void Start()
         {
             _spawnPoints = new List<Transform>();
             _spawnedEnemies = new List<EnemyBase>();
@@ -91,12 +97,22 @@ namespace Balthazariy.ArenaBattle
         {
             _spawnedEnemies.Remove(enemy);
 
-            GetEnergyEvent?.Invoke(enemy.GetEnergyDrop());
+            _player.AddEnergy(enemy.GetEnergyDrop());
+            _player.AddScore(enemy.GetScoreDrop());
         }
 
         private void StartGameplayEventHandler()
         {
             _isSpawning = true;
+        }
+
+        public EnemyBase GetEnemyByName(string name)
+        {
+            foreach (var enemy in _spawnedEnemies)
+                if (String.Compare(enemy.enemyName, name) == 1)
+                    return enemy;
+
+            return null;
         }
     }
 

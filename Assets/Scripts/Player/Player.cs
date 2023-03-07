@@ -29,15 +29,17 @@ namespace Balthazariy.ArenaBattle.Players
         [SerializeField] private int _energyLimit;
         [SerializeField] private int _healthLimit;
 
-        [SerializeField] private MainPage _mainPage;
+        [SerializeField] private GameplayPage _mainPage;
 
         private List<BulletBase> _bullets;
+        private BulletBase _currentBullet;
 
         private const float _shootCountdownTimer = 0.5f;
         private float _currentShootCountdownTimer;
 
         private int _health;
         private int _energy;
+        private int _score;
 
         private bool _isShooted;
         private bool _isAlive;
@@ -54,15 +56,19 @@ namespace Balthazariy.ArenaBattle.Players
             private set => _energy = value;
         }
 
-        private void Awake()
+        public int Score
+        {
+            get => _score;
+            private set => _score = value;
+        }
+
+        private void Start()
         {
             _bullets = new List<BulletBase>();
 
             _firstPersonController.enabled = false;
             _isShooted = true;
             _isAlive = false;
-
-            ResetStats();
 
             _onBehaviourHandler.TriggerEntered += OnColliderEnterEventHandler;
             Main.Instance.StartGameplayEvent += StartGameplayEventHandler;
@@ -72,9 +78,11 @@ namespace Balthazariy.ArenaBattle.Players
         {
             _health = 100;
             _energy = 0;
+            _score = 0;
 
             AddEnergy(_energy);
             AddHealth(0);
+            AddScore(0);
         }
 
         public void AddEnergy(int value)
@@ -95,6 +103,13 @@ namespace Balthazariy.ArenaBattle.Players
                 _health = _healthLimit;
 
             _mainPage.UpdateHealthValue(_health, _healthLimit);
+        }
+
+        public void AddScore(int value)
+        {
+            _score += value;
+
+            _mainPage.UpdateScoreValue(_score);
         }
 
         private void Update()
@@ -144,6 +159,7 @@ namespace Balthazariy.ArenaBattle.Players
 
                 BulletBase bullet = new PlayerBullet(_bulletPrefab, _bulletParent, 50, rotation, startPosition);
                 bullet.BulletDestroyEvent += OnBulletDestroyEventHandler;
+                _currentBullet = bullet;
 
                 _bullets.Add(bullet);
 
@@ -154,6 +170,7 @@ namespace Balthazariy.ArenaBattle.Players
 
         private void StartGameplayEventHandler()
         {
+            ResetStats();
             _firstPersonController.enabled = true;
             _isAlive = true;
         }
@@ -181,21 +198,35 @@ namespace Balthazariy.ArenaBattle.Players
             _isAlive = IsAlive();
 
             if (!_isAlive)
+            {
                 Main.Instance.StopGameplay();
+                _firstPersonController.enabled = false;
+            }
         }
 
         public BulletBase GetBulletByName(string name)
         {
-            for (int i = 0; i < _bullets.Count; i++)
-                if (String.Compare(_bullets[i].bulletName, name) == 1)
-                    return _bullets[i];
+            if (_currentBullet != null)
+                return _currentBullet;
+
+            foreach (var bullet in _bullets)
+                if (String.Compare(bullet.bulletName, name) == 1)
+                    return bullet;
 
             return null;
         }
 
-        private void ApplyDamage(int damage) => _health -= damage;
+        private void ApplyDamage(int damage)
+        {
+            _health -= damage;
 
-        private bool IsAlive() => _health <= 0;
+            if (_health <= 0)
+                _health = 0;
+
+            _mainPage.UpdateHealthValue(_health, _healthLimit);
+        }
+
+        private bool IsAlive() => _health > 0;
 
         public Vector3 GetPlayerPosition() => _selfObject.transform.localPosition;
 

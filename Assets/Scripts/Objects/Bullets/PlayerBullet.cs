@@ -6,7 +6,7 @@ namespace Balthazariy.ArenaBattle.Objects.Bullets
     public class PlayerBullet : BulletBase
     {
 
-        private int _bulletHealth;
+
         private const float _chanceToNothing = 50.0f;
         private float _chanceToRicochet = 3f;
         private bool _isRicochet;
@@ -17,19 +17,14 @@ namespace Balthazariy.ArenaBattle.Objects.Bullets
                             Vector3 playerRotation,
                             Vector3 startPosition) : base(prefab, parent, damage, playerRotation, startPosition)
         {
-            _bulletHealth = 1;
 
-            InitChancing();
+
+            InitChancingToRicochetOrMoreHealth();
 
         }
 
-        private void InitChancing()
+        private void InitChancingToRicochetOrMoreHealth()
         {
-            int chance = UnityEngine.Random.Range(0, 100);
-
-            if (chance >= _chanceToNothing)
-                return;
-
             //int healthOrRicochetChance = UnityEngine.Random.Range(0, 100);
 
             //if (healthOrRicochetChance > 0 && healthOrRicochetChance <= 50)

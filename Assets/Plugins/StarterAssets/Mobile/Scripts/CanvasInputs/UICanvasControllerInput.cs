@@ -4,7 +4,6 @@ namespace StarterAssets
 {
     public class UICanvasControllerInput : MonoBehaviour
     {
-
         [Header("Output")]
         public StarterAssetsInputs starterAssetsInputs;
 

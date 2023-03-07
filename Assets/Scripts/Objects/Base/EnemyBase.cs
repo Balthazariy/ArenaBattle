@@ -44,6 +44,8 @@ namespace Balthazariy.ArenaBattle.Objects.Base
         private float _currenattackCountdownTimer;
         private bool _isAttacked;
 
+        public string enemyName;
+
         public EnemyBase(Transform parent,
                          Vector3 startPosition,
                          Player player,
@@ -55,6 +57,10 @@ namespace Balthazariy.ArenaBattle.Objects.Base
             _data = data;
 
             _selfObject = MonoBehaviour.Instantiate(_data.prefab, parent);
+
+            enemyName = "Enemy[" + UnityEngine.Random.Range(0, 9999).ToString() + "]";
+            _selfObject.name = enemyName;
+
             _selfTransform = _selfObject.transform;
 
             _rigidbody = _selfObject.GetComponent<Rigidbody>();
@@ -65,7 +71,6 @@ namespace Balthazariy.ArenaBattle.Objects.Base
             _modelMeshRenderer = _modelObject.GetComponent<MeshRenderer>();
 
             _onBehaviourHandler.TriggerEntered += TriggerEnteredEventHandler;
-            _onBehaviourHandler.CollisionEnter += OnCollisionEnterEventHandler;
 
             _selfTransform.position = startPosition;
 
@@ -78,6 +83,8 @@ namespace Balthazariy.ArenaBattle.Objects.Base
 
             _isAlive = true;
         }
+
+        public int GetDamage() => _damage;
 
         public virtual void Update()
         {
@@ -94,15 +101,13 @@ namespace Balthazariy.ArenaBattle.Objects.Base
         public virtual void Hit()
         {
             _player.ApplyDamageAndCheckIsAlive(_damage);
+            Dispose();
         }
 
         private void TriggerEnteredEventHandler(Collider target)
         {
             InterractWithPlayerBullet(target);
-        }
-
-        private void OnCollisionEnterEventHandler(Collision target)
-        {
+            InterractWithPlayerBody(target);
         }
 
         public void Dispose()
@@ -133,7 +138,17 @@ namespace Balthazariy.ArenaBattle.Objects.Base
             }
         }
 
+        private void InterractWithPlayerBody(Collider target)
+        {
+            if (target.transform.tag == "Player")
+            {
+                Hit();
+                //ApplyDamageAndCheckIsAlive(50);
+            }
+        }
+
         public int GetEnergyDrop() => _energyDrop;
+        public int GetScoreDrop() => _scoreDrop;
 
         private void ApplyDamage(int damage) => _health -= damage;
 

@@ -48,13 +48,6 @@ namespace Balthazariy.ArenaBattle.Objects.Enemies
 
         }
 
-        public override void Hit()
-        {
-            base.Hit();
-
-            Dispose();
-        }
-
         private void FlyUp()
         {
 

@@ -21,6 +21,8 @@ namespace Balthazariy.ArenaBattle.Objects.Base
 
         protected const float BULLET_SPEED = 4.0f;
 
+        protected int _bulletHealth;
+
         public string bulletName;
 
         private bool _isAlive;
@@ -58,6 +60,8 @@ namespace Balthazariy.ArenaBattle.Objects.Base
 
             _currentLiveTime = LIVE_TIME;
 
+            _bulletHealth = 1;
+
             _bulletDamage = bulletDamage;
 
             _selfObject.SetActive(true);
@@ -73,7 +77,7 @@ namespace Balthazariy.ArenaBattle.Objects.Base
             _currentLiveTime -= Time.deltaTime;
 
             if (_currentLiveTime <= 0)
-                Dispose(false);
+                Dead();
         }
 
         public virtual void FixedUpdate()
@@ -86,21 +90,29 @@ namespace Balthazariy.ArenaBattle.Objects.Base
 
         public void Dispose(bool isEnemy)
         {
-            //if (isEnemy)
-            //{
-            //    --_bulletHealth;
+            if (isEnemy)
+            {
+                --_bulletHealth;
 
-            //    if (_bulletHealth <= 0)
-            //        Dead();
-            //}
-            //else
-            Dead();
+                if (_bulletHealth <= 0)
+                    Dead();
+            }
+            else
+                Dead();
         }
 
         private void TriggerEnteredEventHandler(Collider target)
         {
             if (!_isAlive)
                 return;
+
+            //if (target.transform.tag == "Enemy")
+            //{
+            //    Dispose(true);
+            //    return;
+            //}
+
+            //if (target.transform.tag != "Ground")
             Dispose(target.transform.tag != "Ground");
         }
 
@@ -108,10 +120,18 @@ namespace Balthazariy.ArenaBattle.Objects.Base
         {
             if (!_isAlive)
                 return;
+
+            //if (target.transform.tag == "Enemy")
+            //{
+            //    Dispose(true);
+            //    return;
+            //}
             Dispose(target.transform.tag != "Ground");
+            //if (target.transform.tag != "Ground")
+            //    Dispose(false);
         }
 
-        private void Dead()
+        protected void Dead()
         {
             _isAlive = false;
 

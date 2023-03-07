@@ -13,9 +13,13 @@ namespace Balthazariy.ArenaBattle
 
         public bool GameplayStarted;
 
-        [SerializeField] private MainPage _mainPage;
+        [SerializeField] private GameplayPage _gameplayPage;
+        [SerializeField] private MenuPage _menuPage;
+        [SerializeField] private PausePage _pausePage;
+        [SerializeField] private GameOverPage _gameOverPage;
+        [SerializeField] private GameObject _gameplayPrefab;
 
-        private const float _startGameTimer = 3f;
+        private const float _startGameTimer = 4f;
         private float _currentStartGameTimer;
         private bool _startCountdown;
 
@@ -27,7 +31,10 @@ namespace Balthazariy.ArenaBattle
         {
             if (Instance == null)
                 Instance = this;
+        }
 
+        private void Start()
+        {
             _currentStartGameTimer = _startGameTimer;
 
             GameplayStarted = false;
@@ -35,7 +42,7 @@ namespace Balthazariy.ArenaBattle
             _gameTimer = 0.0f;
             _isGameTimerActive = false;
 
-            _startCountdown = true;
+            _startCountdown = false;
         }
 
         private void Update()
@@ -51,15 +58,24 @@ namespace Balthazariy.ArenaBattle
             {
                 _currentStartGameTimer -= Time.deltaTime;
 
-                _mainPage.UpdatePreStartTimerValue((int)_currentStartGameTimer);
+                _gameplayPage.UpdatePreStartTimerValue((int)_currentStartGameTimer);
 
                 if (_currentStartGameTimer <= 0)
                 {
                     _startCountdown = false;
-
+                    _gameplayPage.ActivePreStartTimer(false);
                     StartGameplay();
                 }
             }
+        }
+
+        public void PreStartGame()
+        {
+            HideAllPages();
+
+            _startCountdown = true;
+            _gameplayPage.Show();
+            _gameplayPage.ActivePreStartTimer(true);
         }
 
         public void StartGameplay()
@@ -71,8 +87,25 @@ namespace Balthazariy.ArenaBattle
 
         public void StopGameplay()
         {
+            HideAllPages();
+            _menuPage.Show();
             GameplayStarted = false;
             _isGameTimerActive = false;
+            StopGameplayEvent?.Invoke();
+        }
+
+        public void RestartGame()
+        {
+            StopGameplay();
+            StartGameplay();
+        }
+
+        private void HideAllPages()
+        {
+            _gameplayPage.Hide();
+            _menuPage.Hide();
+            _pausePage.Hide();
+            _gameOverPage.Hide();
         }
 
         private void UpdateGameTimer()
@@ -83,8 +116,13 @@ namespace Balthazariy.ArenaBattle
 
                 int minutes = Mathf.FloorToInt(_gameTimer / 60.0f);
                 int seconds = Mathf.FloorToInt(_gameTimer - minutes * 60);
-                _mainPage.UpdateTimeValue(minutes, seconds);
+                _gameplayPage.UpdateTimeValue(minutes, seconds);
             }
+        }
+
+        public void PauseGame(bool isPause)
+        {
+            Time.timeScale = isPause ? 0 : 1;
         }
     }
 }
