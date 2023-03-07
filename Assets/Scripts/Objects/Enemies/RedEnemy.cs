@@ -29,6 +29,8 @@ namespace Balthazariy.ArenaBattle.Objects.Enemies
             _minTimeToFlyUp = 0.5f;
             _maxTimeToFlyUp = 2.0f;
 
+            _energyDrop = 15;
+            _scoreDrop = 5;
 
             _timeToFlyUp = UnityEngine.Random.Range(_minTimeToFlyUp, _maxTimeToFlyUp);
         }

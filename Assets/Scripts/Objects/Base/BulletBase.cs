@@ -31,9 +31,6 @@ namespace Balthazariy.ArenaBattle.Objects.Base
         #endregion
 
         private int _bulletDamage;
-        private int _bulletHealth;
-        private const float _chanceToNothing = 50.0f;
-        private bool _isRicochet;
 
         public BulletBase(GameObject prefab, Transform parent, int bulletDamage, Vector3 playerRotation, Vector3 startPosition)
         {
@@ -62,9 +59,6 @@ namespace Balthazariy.ArenaBattle.Objects.Base
             _currentLiveTime = LIVE_TIME;
 
             _bulletDamage = bulletDamage;
-            _bulletHealth = 1;
-
-            InitChancing();
 
             _selfObject.SetActive(true);
 
@@ -92,15 +86,15 @@ namespace Balthazariy.ArenaBattle.Objects.Base
 
         public void Dispose(bool isEnemy)
         {
-            if (isEnemy)
-            {
-                --_bulletHealth;
+            //if (isEnemy)
+            //{
+            //    --_bulletHealth;
 
-                if (_bulletHealth <= 0)
-                    Dead();
-            }
-            else
-                Dead();
+            //    if (_bulletHealth <= 0)
+            //        Dead();
+            //}
+            //else
+            Dead();
         }
 
         private void TriggerEnteredEventHandler(Collider target)
@@ -127,26 +121,6 @@ namespace Balthazariy.ArenaBattle.Objects.Base
             BulletDestroyEvent?.Invoke(this);
 
             MonoBehaviour.Destroy(_selfObject);
-        }
-
-
-        private void InitChancing()
-        {
-            int chance = UnityEngine.Random.Range(0, 100);
-
-            if (chance >= _chanceToNothing)
-                return;
-
-            int healthOrRicochetChance = UnityEngine.Random.Range(0, 100);
-
-            if (healthOrRicochetChance > 0 && healthOrRicochetChance <= 50)
-            {
-                ++_bulletHealth;
-            }
-            else if (healthOrRicochetChance > 50 && healthOrRicochetChance <= 100)
-            {
-                _isRicochet = true;
-            }
         }
 
         public int GetBulletDamage() => _bulletDamage;

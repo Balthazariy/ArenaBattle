@@ -1,6 +1,7 @@
 using Balthazariy.ArenaBattle.Models;
 using Balthazariy.ArenaBattle.Objects.Base;
 using Balthazariy.ArenaBattle.Objects.Enemies;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +9,8 @@ namespace Balthazariy.ArenaBattle
 {
     public class Spawner : MonoBehaviour
     {
+        public event Action<int> GetEnergyEvent;
+
         [Header("General")]
         [SerializeField] private Transform _spawnPointParent;
         [SerializeField] private List<EnemyBase> _spawnedEnemies;
@@ -79,7 +82,16 @@ namespace Balthazariy.ArenaBattle
             else if (chanceToBlueEnemy > 75.0f)
                 enemy = new BlueEnemy(_enemyParent, GetSpawnPointPosition(), _player, 10f, 1f, 1f, data.GetEnemyByType(EnemyType.Blue));
 
+            enemy.EnemyDestroyEvent += EnemyDestroyedEventHandler;
+
             _spawnedEnemies.Add(enemy);
+        }
+
+        private void EnemyDestroyedEventHandler(EnemyBase enemy)
+        {
+            _spawnedEnemies.Remove(enemy);
+
+            GetEnergyEvent?.Invoke(enemy.GetEnergyDrop());
         }
 
         private void StartGameplayEventHandler()

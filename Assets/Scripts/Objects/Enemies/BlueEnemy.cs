@@ -15,7 +15,8 @@ namespace Balthazariy.ArenaBattle.Objects.Enemies
                          float attackCountdownTime,
                          Enemy data) : base(parent, startPosition, player, moveSpeed, rotatingSpeed, attackCountdownTime, data)
         {
-
+            _energyDrop = 50;
+            _scoreDrop = 15;
         }
 
         public override void Update()
