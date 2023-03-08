@@ -13,6 +13,8 @@ namespace Balthazariy.ArenaBattle.Players
 {
     public class Player : MonoBehaviour
     {
+        public event Action UltaActivated;
+
         [SerializeField] private GameObject _selfObject;
         [SerializeField] private GameObject _bulletPrefab;
 
@@ -72,6 +74,7 @@ namespace Balthazariy.ArenaBattle.Players
 
             _onBehaviourHandler.TriggerEntered += OnColliderEnterEventHandler;
             Main.Instance.StartGameplayEvent += StartGameplayEventHandler;
+            Main.Instance.StopGameplayEvent += StopGameplayEventHandler;
         }
 
         public void ResetStats()
@@ -168,11 +171,46 @@ namespace Balthazariy.ArenaBattle.Players
             }
         }
 
+        public void OnFireUI()
+        {
+            OnFire(null);
+        }
+
+        public void OnUltaUI()
+        {
+            OnUlta(null);
+        }
+
+        public void OnUlta(InputValue value)
+        {
+            if (!_isAlive)
+                return;
+
+            if (_energy == _energyLimit)
+            {
+                _energy = 0;
+                AddEnergy(0);
+                UltaActivated?.Invoke();
+            }
+            else
+                _energy = _energyLimit;
+        }
+
         private void StartGameplayEventHandler()
         {
             ResetStats();
             _firstPersonController.enabled = true;
             _isAlive = true;
+        }
+
+        private void StopGameplayEventHandler()
+        {
+            ResetStats();
+            _firstPersonController.enabled = false;
+            _isAlive = false;
+
+            for (int i = 0; i < _bullets.Count; i++)
+                _bullets[i].Dispose(false);
         }
 
         private void OnBulletDestroyEventHandler(BulletBase currentBullet)

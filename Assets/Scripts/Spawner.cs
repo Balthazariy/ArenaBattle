@@ -45,6 +45,22 @@ namespace Balthazariy.ArenaBattle
                 _spawnPoints.Add(_spawnPointParent.GetChild(i));
 
             Main.Instance.StartGameplayEvent += StartGameplayEventHandler;
+            Main.Instance.StopGameplayEvent += StopGameplayEventHandler;
+            _player.UltaActivated += UltaActivatedEventHandler;
+        }
+
+        private void UltaActivatedEventHandler()
+        {
+            for (int i = 0; i < _spawnedEnemies.Count; i++)
+                _spawnedEnemies[i].Dispose();
+        }
+
+        private void StopGameplayEventHandler()
+        {
+            for (int i = 0; i < _spawnedEnemies.Count; i++)
+                _spawnedEnemies[i].Dispose();
+
+            _isSpawning = false;
         }
 
         private void Update()

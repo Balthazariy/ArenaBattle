@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace Balthazariy.ArenaBattle.Screens
@@ -54,6 +55,26 @@ namespace Balthazariy.ArenaBattle.Screens
         private void ExitButtonOnClickHandler()
         {
             Main.Instance.StopGameplay();
+        }
+
+        public void OnRestart(InputValue value)
+        {
+            RestartButtonOnClickHandler();
+        }
+
+        public void OnExit(InputValue value)
+        {
+            ExitButtonOnClickHandler();
+        }
+
+        public void OnRestartUI()
+        {
+            OnRestart(null);
+        }
+
+        public void OnExitUI()
+        {
+            OnExit(null);
         }
     }
 }

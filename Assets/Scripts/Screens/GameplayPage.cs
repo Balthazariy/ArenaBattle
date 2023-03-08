@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace Balthazariy.ArenaBattle.Screens
@@ -70,6 +71,11 @@ namespace Balthazariy.ArenaBattle.Screens
             Main.Instance.PauseGame(true);
 
             _pausePage.Show();
+        }
+
+        public void OnPause(InputValue value)
+        {
+            PauseButtonOnClickHandler();
         }
     }
 }

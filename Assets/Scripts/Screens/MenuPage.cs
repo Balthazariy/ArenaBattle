@@ -44,7 +44,12 @@ namespace Balthazariy.ArenaBattle.Screens
 
         private void OnStart(InputValue input)
         {
-            Main.Instance.PreStartGame();
+            StartButtonOnClickHandler();
+        }
+
+        public void OnStartUI()
+        {
+            OnStart(null);
         }
     }
 }

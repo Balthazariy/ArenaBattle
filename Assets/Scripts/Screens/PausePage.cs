@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace Balthazariy.ArenaBattle.Screens
@@ -45,6 +46,7 @@ namespace Balthazariy.ArenaBattle.Screens
         private void ContinueButtonOnClickHandler()
         {
             Main.Instance.PauseGame(false);
+            Hide();
         }
 
         private void RestartButtonOnClickHandler()
@@ -55,6 +57,21 @@ namespace Balthazariy.ArenaBattle.Screens
         private void ExitButtonOnClickHandler()
         {
             Main.Instance.StopGameplay();
+        }
+
+        public void OnContinue(InputValue value)
+        {
+            ContinueButtonOnClickHandler();
+        }
+
+        public void OnRestart(InputValue value)
+        {
+            RestartButtonOnClickHandler();
+        }
+
+        public void OnExit(InputValue value)
+        {
+            ExitButtonOnClickHandler();
         }
     }
 }

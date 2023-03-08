@@ -19,12 +19,12 @@ namespace StarterAssets
 
         public void VirtualShootInput(bool virtualShootState)
         {
-            //starterAssetsInputs.ShootInput(virtualShootState);
+            starterAssetsInputs.ShootInput(virtualShootState);
         }
 
         public void VirtualUltaInput(bool virtualUltaState)
         {
-            //starterAssetsInputs.UltaInput(virtualUltaState);
+            starterAssetsInputs.UltaInput(virtualUltaState);
         }
     }
 

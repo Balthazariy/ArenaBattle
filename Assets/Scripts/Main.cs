@@ -17,7 +17,6 @@ namespace Balthazariy.ArenaBattle
         [SerializeField] private MenuPage _menuPage;
         [SerializeField] private PausePage _pausePage;
         [SerializeField] private GameOverPage _gameOverPage;
-        [SerializeField] private GameObject _gameplayPrefab;
 
         private const float _startGameTimer = 4f;
         private float _currentStartGameTimer;
@@ -80,6 +79,8 @@ namespace Balthazariy.ArenaBattle
 
         public void StartGameplay()
         {
+            _gameplayPage.Show();
+            _menuPage.Hide();
             GameplayStarted = true;
             _isGameTimerActive = true;
             StartGameplayEvent?.Invoke();
@@ -88,7 +89,7 @@ namespace Balthazariy.ArenaBattle
         public void StopGameplay()
         {
             HideAllPages();
-            _menuPage.Show();
+            _gameOverPage.Show();
             GameplayStarted = false;
             _isGameTimerActive = false;
             StopGameplayEvent?.Invoke();
