@@ -84,6 +84,12 @@ namespace Balthazariy.ArenaBattle.Objects.Enemies
             }
         }
 
+        public override void Dispose()
+        {
+            for (int i = 0; i < _bullets.Count; i++)
+                _bullets[i].Dispose(false);
+        }
+
         private void OnBulletDestroyEventHandler(BulletBase currentBullet)
         {
             _bullets.Remove(currentBullet);

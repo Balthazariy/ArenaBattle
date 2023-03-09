@@ -93,9 +93,12 @@ namespace Balthazariy.ArenaBattle.Objects.Base
         {
             InterractWithPlayerBullet(target);
             InterractWithPlayerBody(target);
+
+            if (target.transform.tag == "Ground")
+                Dispose();
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             _isAlive = false;
 

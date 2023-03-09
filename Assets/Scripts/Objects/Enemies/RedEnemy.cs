@@ -11,7 +11,6 @@ namespace Balthazariy.ArenaBattle.Objects.Enemies
         private float _maxTimeToFlyUp;
 
         private float _timeToFlyUp;
-        private float _rotatingSpeed;
 
         private bool _isFlyUp;
         private bool _isRotateToPlayer;
@@ -24,41 +23,65 @@ namespace Balthazariy.ArenaBattle.Objects.Enemies
                         Enemy data) : base(parent, startPosition, player, attackCountdownTime, data)
         {
 
-            _minTimeToFlyUp = 0.5f;
-            _maxTimeToFlyUp = 2.0f;
+            _minTimeToFlyUp = 1.0f;
+            _maxTimeToFlyUp = 3.0f;
 
             _energyDrop = 15;
             _scoreDrop = 5;
 
             _timeToFlyUp = UnityEngine.Random.Range(_minTimeToFlyUp, _maxTimeToFlyUp);
+
+            ChangeState(0);
         }
 
         public override void Update()
         {
             base.Update();
 
-
+            FlyUp();
         }
 
         public override void FixedUpdate()
         {
             base.FixedUpdate();
 
+            RotateToPlayer();
+            FlyToPlayer();
         }
 
         private void FlyUp()
         {
+            if (_isFlyUp)
+            {
+                _timeToFlyUp -= Time.deltaTime;
 
+                if (_timeToFlyUp <= 0)
+                {
+                    ChangeState(1);
+                }
+
+                _rigidbody.position += Vector3.up * 3f * Time.deltaTime;
+            }
         }
 
         private void RotateToPlayer()
         {
-
+            if (_isRotateToPlayer)
+            {
+                var playerPosition = _player.GetPlayerPosition();
+                _modelObject.transform.LookAt(new Vector3(playerPosition.x, playerPosition.y + 1, playerPosition.z));
+                ChangeState(2);
+            }
         }
 
         private void FlyToPlayer()
         {
-
+            if (_isFlyToPlayer)
+            {
+                var playerPosition = _player.GetPlayerPosition();
+                _modelObject.transform.LookAt(new Vector3(playerPosition.x, playerPosition.y + 1, playerPosition.z));
+                _selfTransform.position += _selfTransform.forward * 6f * Time.fixedDeltaTime;
+            }
         }
 
         /// <summary>
