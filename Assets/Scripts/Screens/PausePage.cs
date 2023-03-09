@@ -52,11 +52,15 @@ namespace Balthazariy.ArenaBattle.Screens
         private void RestartButtonOnClickHandler()
         {
             Main.Instance.RestartGame();
+            Hide();
         }
 
         private void ExitButtonOnClickHandler()
         {
             Main.Instance.StopGameplay();
+            Hide();
+            Main.Instance.gameplayPage.Hide();
+            Main.Instance.menuPage.Show();
         }
 
         public void OnContinue(InputValue value)

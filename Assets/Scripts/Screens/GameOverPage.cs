@@ -50,11 +50,16 @@ namespace Balthazariy.ArenaBattle.Screens
         private void RestartButtonOnClickHandler()
         {
             Main.Instance.RestartGame();
+            Hide();
+            Main.Instance.gameplayPage.Show();
         }
 
         private void ExitButtonOnClickHandler()
         {
             Main.Instance.StopGameplay();
+            Hide();
+            Main.Instance.gameplayPage.Hide();
+            Main.Instance.menuPage.Show();
         }
 
         public void OnRestart(InputValue value)

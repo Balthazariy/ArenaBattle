@@ -237,6 +237,7 @@ namespace Balthazariy.ArenaBattle.Players
 
             if (!_isAlive)
             {
+                Main.Instance.gameOverPage.Show();
                 Main.Instance.StopGameplay();
                 _firstPersonController.enabled = false;
             }
