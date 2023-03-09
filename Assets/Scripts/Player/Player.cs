@@ -192,8 +192,6 @@ namespace Balthazariy.ArenaBattle.Players
                 AddEnergy(0);
                 UltaActivated?.Invoke();
             }
-            else
-                _energy = _energyLimit;
         }
 
         private void StartGameplayEventHandler()
