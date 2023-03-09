@@ -12,24 +12,12 @@ namespace Balthazariy.ArenaBattle.Screens
 
         private GameObject _selfObject;
 
-        private void OnEnable()
-        {
-            _continueButton.onClick.AddListener(ContinueButtonOnClickHandler);
-            _restartButton.onClick.AddListener(RestartButtonOnClickHandler);
-            _exitButton.onClick.AddListener(ExitButtonOnClickHandler);
-        }
-
-        private void OnDisable()
-        {
-            _continueButton.onClick.RemoveListener(ContinueButtonOnClickHandler);
-            _restartButton.onClick.RemoveListener(RestartButtonOnClickHandler);
-            _exitButton.onClick.RemoveListener(ExitButtonOnClickHandler);
-        }
-
         private void Awake()
         {
             _selfObject = this.gameObject;
-
+            _continueButton.onClick.AddListener(ContinueButtonOnClickHandler);
+            _restartButton.onClick.AddListener(RestartButtonOnClickHandler);
+            _exitButton.onClick.AddListener(ExitButtonOnClickHandler);
             Hide();
         }
 
@@ -51,12 +39,14 @@ namespace Balthazariy.ArenaBattle.Screens
 
         private void RestartButtonOnClickHandler()
         {
+            Main.Instance.PauseGame(false);
             Main.Instance.RestartGame();
             Hide();
         }
 
         private void ExitButtonOnClickHandler()
         {
+            Main.Instance.PauseGame(false);
             Main.Instance.StopGameplay();
             Hide();
             Main.Instance.gameplayPage.Hide();

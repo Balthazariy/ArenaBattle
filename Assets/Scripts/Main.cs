@@ -56,7 +56,6 @@ namespace Balthazariy.ArenaBattle
             if (_startCountdown)
             {
                 _currentStartGameTimer -= Time.deltaTime;
-
                 gameplayPage.UpdatePreStartTimerValue((int)_currentStartGameTimer);
 
                 if (_currentStartGameTimer <= 0)
@@ -64,7 +63,6 @@ namespace Balthazariy.ArenaBattle
                     _startCountdown = false;
                     gameplayPage.ActivePreStartTimer(false);
                     StartGameplay();
-
                 }
             }
         }
@@ -72,11 +70,11 @@ namespace Balthazariy.ArenaBattle
         public void PreStartGame()
         {
             HideAllPages();
-            menuPage.Hide();
-            gameplayPage.Show();
-            _startCountdown = true;
+            _currentStartGameTimer = _startGameTimer;
+            _gameTimer = 0;
             gameplayPage.Show();
             gameplayPage.ActivePreStartTimer(true);
+            _startCountdown = true;
         }
 
         public void StartGameplay()
@@ -96,7 +94,7 @@ namespace Balthazariy.ArenaBattle
         public void RestartGame()
         {
             StopGameplay();
-            StartGameplay();
+            PreStartGame();
         }
 
         private void HideAllPages()

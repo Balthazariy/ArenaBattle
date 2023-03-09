@@ -31,7 +31,7 @@ namespace Balthazariy.ArenaBattle
         private List<Transform> _topSpawnPoints;
         private List<Transform> _bottomSpawnPoints;
 
-        private float _spawnTime = 1.0f;
+        private float _spawnTime = 5.0f;
         private float _currentSpawnTIme;
         private bool _isSpawning;
 
@@ -68,16 +68,25 @@ namespace Balthazariy.ArenaBattle
 
         private void UltaActivatedEventHandler()
         {
-            for (int i = 0; i < _spawnedEnemies.Count; i++)
-                _spawnedEnemies[i].Dispose();
+            RemoveAllEnemies();
         }
 
         private void StopGameplayEventHandler()
         {
+
+            _isSpawning = false;
+            RemoveAllEnemies();
+        }
+
+        private void RemoveAllEnemies()
+        {
             for (int i = 0; i < _spawnedEnemies.Count; i++)
                 _spawnedEnemies[i].Dispose();
 
-            _isSpawning = false;
+            for (int i = 0; i < _enemyParent.childCount; i++)
+                MonoBehaviour.Destroy(_enemyParent.GetChild(i).gameObject);
+
+            _spawnedEnemies.Clear();
         }
 
         private void Update()
@@ -139,12 +148,15 @@ namespace Balthazariy.ArenaBattle
             _spawnedEnemies.Remove(enemy);
 
             _player.AddEnergy(enemy.GetEnergyDrop());
-            _player.AddScore(enemy.GetScoreDrop());
+            _player.AddScore(1);
         }
 
         private void StartGameplayEventHandler()
         {
             _isSpawning = true;
+
+            for (int i = 0; i < _spawnedEnemies.Count; i++)
+                _spawnedEnemies[i].Dispose();
         }
 
         public EnemyBase GetEnemyByName(string name)

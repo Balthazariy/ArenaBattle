@@ -25,8 +25,6 @@ namespace Balthazariy.ArenaBattle.Objects.Base
 
         protected int _energyDrop;
 
-        protected int _scoreDrop;
-
         private OnBehaviourHandler _onBehaviourHandler;
 
         private int _health;
@@ -135,8 +133,6 @@ namespace Balthazariy.ArenaBattle.Objects.Base
         }
 
         public int GetEnergyDrop() => _energyDrop;
-        public int GetScoreDrop() => _scoreDrop;
-
         private void ApplyDamage(int damage) => _health -= damage;
 
         private bool IsAlive() => _health <= 0;

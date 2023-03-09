@@ -15,22 +15,11 @@ namespace Balthazariy.ArenaBattle.Screens
 
         private GameObject _selfObject;
 
-        private void OnEnable()
-        {
-            _restartButton.onClick.AddListener(RestartButtonOnClickHandler);
-            _exitButton.onClick.AddListener(ExitButtonOnClickHandler);
-        }
-
-        private void OnDisable()
-        {
-            _restartButton.onClick.RemoveListener(RestartButtonOnClickHandler);
-            _exitButton.onClick.RemoveListener(ExitButtonOnClickHandler);
-        }
-
         private void Awake()
         {
             _selfObject = this.gameObject;
-
+            _restartButton.onClick.AddListener(RestartButtonOnClickHandler);
+            _exitButton.onClick.AddListener(ExitButtonOnClickHandler);
             Hide();
         }
 

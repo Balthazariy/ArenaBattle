@@ -37,7 +37,6 @@ namespace Balthazariy.ArenaBattle.Objects.Enemies
             _currentShootCountdownTimer = _shootCountdownTimer;
 
             _energyDrop = 50;
-            _scoreDrop = 15;
         }
 
         public override void Update()
@@ -86,6 +85,8 @@ namespace Balthazariy.ArenaBattle.Objects.Enemies
 
         public override void Dispose()
         {
+            base.Dispose();
+
             for (int i = 0; i < _bullets.Count; i++)
                 _bullets[i].Dispose(false);
         }

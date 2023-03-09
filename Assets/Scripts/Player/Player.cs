@@ -254,7 +254,6 @@ namespace Balthazariy.ArenaBattle.Players
         private void StartGameplayEventHandler()
         {
             ResetStats();
-            _firstPersonController.enabled = false;
             _firstPersonController.enabled = true;
             _isAlive = true;
         }

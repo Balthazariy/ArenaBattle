@@ -7720,7 +7720,7 @@ MonoBehaviour:
   _enemyParent: {fileID: 8674006083882099757}
   _player: {fileID: 8674006084431514522}
   _decreaseSpawnTimeModificator: 0.1
-  _spawnTimeLimit: 0.5
+  _spawnTimeLimit: 2
   _spawnedEnemiesLimit: 20
   _bulletPrefab: {fileID: 5075950583511622203, guid: e162757d473d0ff4486dae1d10485201, type: 3}
   _bulletParent: {fileID: 8674006085308397939}

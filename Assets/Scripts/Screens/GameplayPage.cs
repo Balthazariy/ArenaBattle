@@ -22,21 +22,12 @@ namespace Balthazariy.ArenaBattle.Screens
 
         private GameObject _selfObject;
 
-        private void OnEnable()
-        {
-            _pauseButton.onClick.AddListener(PauseButtonOnClickHandler);
-        }
-
-        private void OnDisable()
-        {
-            _pauseButton.onClick.RemoveListener(PauseButtonOnClickHandler);
-        }
-
         private void Awake()
         {
             _selfObject = this.gameObject;
 
             Hide();
+            _pauseButton.onClick.AddListener(PauseButtonOnClickHandler);
         }
 
         public void Show()

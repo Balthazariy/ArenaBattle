@@ -27,7 +27,6 @@ namespace Balthazariy.ArenaBattle.Objects.Enemies
             _maxTimeToFlyUp = 3.0f;
 
             _energyDrop = 15;
-            _scoreDrop = 5;
 
             _timeToFlyUp = UnityEngine.Random.Range(_minTimeToFlyUp, _maxTimeToFlyUp);
 
@@ -69,7 +68,7 @@ namespace Balthazariy.ArenaBattle.Objects.Enemies
             if (_isRotateToPlayer)
             {
                 var playerPosition = _player.GetPlayerPosition();
-                _modelObject.transform.LookAt(new Vector3(playerPosition.x, playerPosition.y + 1, playerPosition.z));
+                _selfTransform.LookAt(new Vector3(playerPosition.x, playerPosition.y + 1, playerPosition.z));
                 ChangeState(2);
             }
         }
@@ -79,7 +78,8 @@ namespace Balthazariy.ArenaBattle.Objects.Enemies
             if (_isFlyToPlayer)
             {
                 var playerPosition = _player.GetPlayerPosition();
-                _modelObject.transform.LookAt(new Vector3(playerPosition.x, playerPosition.y + 1, playerPosition.z));
+
+                _selfTransform.LookAt(new Vector3(playerPosition.x, playerPosition.y + 1, playerPosition.z));
                 _selfTransform.position += _selfTransform.forward * 6f * Time.fixedDeltaTime;
             }
         }
