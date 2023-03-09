@@ -89,6 +89,11 @@ namespace Balthazariy.ArenaBattle.Objects.Enemies
 
             for (int i = 0; i < _bullets.Count; i++)
                 _bullets[i].Dispose(false);
+
+            for (int i = 0; i < _bulletParent.childCount; i++)
+                MonoBehaviour.Destroy(_bulletParent.GetChild(i).gameObject);
+
+            _bullets.Clear();
         }
 
         private void OnBulletDestroyEventHandler(BulletBase currentBullet)
