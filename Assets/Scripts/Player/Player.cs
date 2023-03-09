@@ -1,3 +1,4 @@
+using Balthazariy.ArenaBattle.Models;
 using Balthazariy.ArenaBattle.Objects.Base;
 using Balthazariy.ArenaBattle.Objects.Bullets;
 using Balthazariy.ArenaBattle.Screens;
@@ -35,6 +36,7 @@ namespace Balthazariy.ArenaBattle.Players
 
         private List<BulletBase> _bullets;
         private BulletBase _currentBullet;
+        private EnemiesData _enemyData;
 
         private const float _shootCountdownTimer = 0.5f;
         private float _currentShootCountdownTimer;
@@ -45,6 +47,9 @@ namespace Balthazariy.ArenaBattle.Players
 
         private bool _isShooted;
         private bool _isAlive;
+
+        private int _chanceToRicochet;
+        private int _chanceToAddHealth;
 
         public int Health
         {
@@ -72,7 +77,12 @@ namespace Balthazariy.ArenaBattle.Players
             _isShooted = true;
             _isAlive = false;
 
-            _onBehaviourHandler.TriggerEntered += OnColliderEnterEventHandler;
+            _enemyData = Resources.Load<EnemiesData>("Models/EnemiesData");
+
+            _chanceToAddHealth = 3;
+            _chanceToRicochet = 3;
+
+            _onBehaviourHandler.TriggerEntered += OnTriggerEnterEventHandler;
             Main.Instance.StartGameplayEvent += StartGameplayEventHandler;
             Main.Instance.StopGameplayEvent += StopGameplayEventHandler;
         }
@@ -95,7 +105,15 @@ namespace Balthazariy.ArenaBattle.Players
             if (_energy >= _energyLimit)
                 _energy = _energyLimit;
 
+            if (_energy <= 0)
+                _energy = 0;
+
             _mainPage.UpdateEnergyValue(_energy, _energyLimit);
+        }
+
+        public void RemoveEnergy(int value)
+        {
+            AddEnergy(value * -1);
         }
 
         public void AddHealth(int value)
@@ -104,6 +122,9 @@ namespace Balthazariy.ArenaBattle.Players
 
             if (_health >= _healthLimit)
                 _health = _healthLimit;
+
+            if (_health <= 0)
+                _health = 0;
 
             _mainPage.UpdateHealthValue(_health, _healthLimit);
         }
@@ -160,7 +181,11 @@ namespace Balthazariy.ArenaBattle.Players
                 var rotation = _cameraRoot.localEulerAngles + transform.localEulerAngles;
                 var startPosition = _bulletStartPosition.position;
 
-                BulletBase bullet = new PlayerBullet(_bulletPrefab, _bulletParent, 50, rotation, startPosition);
+                int bulletHealth = CalculateBulletHealth();
+
+                bool isRicochet = CalculateBulletRicochet();
+
+                BulletBase bullet = new PlayerBullet(_bulletPrefab, _bulletParent, 50, rotation, bulletHealth, isRicochet, startPosition);
                 bullet.BulletDestroyEvent += OnBulletDestroyEventHandler;
                 _currentBullet = bullet;
 
@@ -169,6 +194,38 @@ namespace Balthazariy.ArenaBattle.Players
                 _currentShootCountdownTimer = _shootCountdownTimer;
                 _isShooted = true;
             }
+        }
+
+        private int CalculateBulletHealth()
+        {
+            var healthDifference = _healthLimit - _health;
+            var totalChance = _chanceToAddHealth + healthDifference;
+
+            if (totalChance > _healthLimit)
+                totalChance = _healthLimit;
+
+            var chancing = UnityEngine.Random.Range(0, 100);
+            var bulletHealth = 1;
+
+            if (chancing < totalChance)
+                ++bulletHealth;
+            return bulletHealth;
+        }
+
+        private bool CalculateBulletRicochet()
+        {
+            var healthDifference = (_healthLimit - _health) / 2;
+            var totalChance = _chanceToAddHealth + healthDifference;
+
+            if (totalChance > _healthLimit)
+                totalChance = _healthLimit;
+
+            var chancing = UnityEngine.Random.Range(0, 100);
+
+            if (chancing < totalChance)
+                return true;
+
+            return false;
         }
 
         public void OnFireUI()
@@ -197,6 +254,7 @@ namespace Balthazariy.ArenaBattle.Players
         private void StartGameplayEventHandler()
         {
             ResetStats();
+            _firstPersonController.enabled = false;
             _firstPersonController.enabled = true;
             _isAlive = true;
         }
@@ -216,7 +274,7 @@ namespace Balthazariy.ArenaBattle.Players
             _bullets.Remove(currentBullet);
         }
 
-        private void OnColliderEnterEventHandler(Collider target)
+        private void OnTriggerEnterEventHandler(Collider target)
         {
             if (target.transform.tag == "Zone")
                 TeleportToRandomPointOfMap();

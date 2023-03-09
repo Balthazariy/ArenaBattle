@@ -32,25 +32,13 @@ namespace Balthazariy.ArenaBattle.Objects.Base
         private int _health;
         private int _damage;
 
-        private float _moveSpeed;
-        private float _rotatingSpeed;
-
         private bool _isAlive;
-
-        private bool _isAttackState;
-        private bool _isWalkingState;
-
-        private float _attackCountdownTimer = 0.5f;
-        private float _currenattackCountdownTimer;
-        private bool _isAttacked;
 
         public string enemyName;
 
         public EnemyBase(Transform parent,
                          Vector3 startPosition,
                          Player player,
-                         float moveSpeed,
-                         float rotatingSpeed,
                          float attackCountdownTime,
                          Enemy data)
         {
@@ -77,9 +65,6 @@ namespace Balthazariy.ArenaBattle.Objects.Base
             _player = player;
             _health = _data.health;
             _damage = _data.damage;
-            _moveSpeed = moveSpeed;
-            _rotatingSpeed = rotatingSpeed;
-            _attackCountdownTimer = attackCountdownTime;
 
             _isAlive = true;
         }
@@ -135,16 +120,15 @@ namespace Balthazariy.ArenaBattle.Objects.Base
             {
                 BulletBase playerBullet = _player.GetBulletByName(target.name);
                 ApplyDamageAndCheckIsAlive(playerBullet.GetBulletDamage());
+                if (playerBullet.IsRicochet())
+                    _player.AddHealth(15);
             }
         }
 
         private void InterractWithPlayerBody(Collider target)
         {
             if (target.transform.tag == "Player")
-            {
                 Hit();
-                //ApplyDamageAndCheckIsAlive(50);
-            }
         }
 
         public int GetEnergyDrop() => _energyDrop;

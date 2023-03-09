@@ -19,9 +19,10 @@ namespace Balthazariy.ArenaBattle.Objects.Base
         protected GameObject _modelObject;
         protected MeshRenderer _modelMeshRenderer;
 
-        protected const float BULLET_SPEED = 4.0f;
+        protected const float BULLET_SPEED = 2.0f;
 
         protected int _bulletHealth;
+        protected bool _isRicochet;
 
         public string bulletName;
 
@@ -84,8 +85,6 @@ namespace Balthazariy.ArenaBattle.Objects.Base
         {
             if (!_isAlive)
                 return;
-
-            _rigidbody.AddRelativeForce(Vector3.forward * BULLET_SPEED, ForceMode.Impulse);
         }
 
         public void Dispose(bool isEnemy)
@@ -94,8 +93,17 @@ namespace Balthazariy.ArenaBattle.Objects.Base
             {
                 --_bulletHealth;
 
-                if (_bulletHealth <= 0)
-                    Dead();
+                if (_isRicochet)
+                {
+                    var currentAngle = _selfTransform.localEulerAngles;
+                    var addAngle = UnityEngine.Random.Range(-90, 90);
+                    _selfTransform.localEulerAngles = new Vector3(currentAngle.x, currentAngle.y + addAngle, currentAngle.z);
+                }
+                else
+                {
+                    if (_bulletHealth <= 0)
+                        Dead();
+                }
             }
             else
                 Dead();
@@ -106,14 +114,7 @@ namespace Balthazariy.ArenaBattle.Objects.Base
             if (!_isAlive)
                 return;
 
-            //if (target.transform.tag == "Enemy")
-            //{
-            //    Dispose(true);
-            //    return;
-            //}
-
-            //if (target.transform.tag != "Ground")
-            Dispose(target.transform.tag != "Ground");
+            Dispose(target.transform.tag != "Ground" && target.transform.tag != "Zone");
         }
 
         private void OnCollisionEnterEventHandler(Collision target)
@@ -121,14 +122,7 @@ namespace Balthazariy.ArenaBattle.Objects.Base
             if (!_isAlive)
                 return;
 
-            //if (target.transform.tag == "Enemy")
-            //{
-            //    Dispose(true);
-            //    return;
-            //}
-            Dispose(target.transform.tag != "Ground");
-            //if (target.transform.tag != "Ground")
-            //    Dispose(false);
+            Dispose(target.transform.tag != "Ground" && target.transform.tag != "Zone");
         }
 
         protected void Dead()
@@ -144,5 +138,6 @@ namespace Balthazariy.ArenaBattle.Objects.Base
         }
 
         public int GetBulletDamage() => _bulletDamage;
+        public bool IsRicochet() => _isRicochet;
     }
 }

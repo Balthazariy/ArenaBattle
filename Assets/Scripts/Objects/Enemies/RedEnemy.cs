@@ -20,10 +20,8 @@ namespace Balthazariy.ArenaBattle.Objects.Enemies
         public RedEnemy(Transform parent,
                         Vector3 startPosition,
                         Player player,
-                        float moveSpeed,
-                        float rotatingSpeed,
                         float attackCountdownTime,
-                        Enemy data) : base(parent, startPosition, player, moveSpeed, rotatingSpeed, attackCountdownTime, data)
+                        Enemy data) : base(parent, startPosition, player, attackCountdownTime, data)
         {
 
             _minTimeToFlyUp = 0.5f;

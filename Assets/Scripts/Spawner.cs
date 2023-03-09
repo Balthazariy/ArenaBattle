@@ -14,16 +14,24 @@ namespace Balthazariy.ArenaBattle
         public static Spawner Instance;
 
         [Header("General")]
-        [SerializeField] private Transform _spawnPointParent;
+        [SerializeField] private Transform _topSpawnPointParent;
+        [SerializeField] private Transform _bottomSpawnPointParent;
         [SerializeField] private List<EnemyBase> _spawnedEnemies;
         [Space(5)]
         [SerializeField] private Transform _enemyParent;
         [SerializeField] private Players.Player _player;
         [SerializeField] private float _decreaseSpawnTimeModificator = 0.1f;
+        [SerializeField] private float _spawnTimeLimit;
+        [SerializeField] private float _spawnedEnemiesLimit;
+        [Space(5)]
+        [Header("Blue enemy settings")]
+        [SerializeField] private GameObject _bulletPrefab;
+        [SerializeField] private Transform _bulletParent;
 
-        private List<Transform> _spawnPoints;
+        private List<Transform> _topSpawnPoints;
+        private List<Transform> _bottomSpawnPoints;
 
-        private float _spawnTime = 5.0f;
+        private float _spawnTime = 1.0f;
         private float _currentSpawnTIme;
         private bool _isSpawning;
 
@@ -35,18 +43,27 @@ namespace Balthazariy.ArenaBattle
 
         private void Start()
         {
-            _spawnPoints = new List<Transform>();
+            _topSpawnPoints = new List<Transform>();
+            _bottomSpawnPoints = new List<Transform>();
             _spawnedEnemies = new List<EnemyBase>();
 
             _currentSpawnTIme = _spawnTime;
             _isSpawning = false;
 
-            for (int i = 0; i < _spawnPointParent.childCount; i++)
-                _spawnPoints.Add(_spawnPointParent.GetChild(i));
+            InitSpawnPoints();
 
             Main.Instance.StartGameplayEvent += StartGameplayEventHandler;
             Main.Instance.StopGameplayEvent += StopGameplayEventHandler;
             _player.UltaActivated += UltaActivatedEventHandler;
+        }
+
+        private void InitSpawnPoints()
+        {
+            for (int i = 0; i < _topSpawnPointParent.childCount; i++)
+                _topSpawnPoints.Add(_topSpawnPointParent.GetChild(i));
+
+            for (int i = 0; i < _bottomSpawnPointParent.childCount; i++)
+                _bottomSpawnPoints.Add(_bottomSpawnPointParent.GetChild(i));
         }
 
         private void UltaActivatedEventHandler()
@@ -78,6 +95,10 @@ namespace Balthazariy.ArenaBattle
                 if (_currentSpawnTIme <= 0)
                 {
                     _spawnTime -= _decreaseSpawnTimeModificator;
+
+                    if (_spawnTime <= _spawnTimeLimit)
+                        _spawnTime = _spawnTimeLimit;
+
                     _currentSpawnTIme = _spawnTime;
                     SpawnEnemy();
                 }
@@ -90,19 +111,23 @@ namespace Balthazariy.ArenaBattle
                 _spawnedEnemies[i].FixedUpdate();
         }
 
-        private Vector3 GetSpawnPointPosition() => _spawnPoints[UnityEngine.Random.Range(0, _spawnPoints.Count)].localPosition;
+        private Vector3 GetBottomSpawnPointPosition() => _bottomSpawnPoints[UnityEngine.Random.Range(0, _bottomSpawnPoints.Count)].localPosition;
+        private Vector3 GetTopSpawnPointPosition() => _topSpawnPoints[UnityEngine.Random.Range(0, _topSpawnPoints.Count)].localPosition;
 
         private void SpawnEnemy()
         {
+            if (_spawnedEnemies.Count >= _spawnedEnemiesLimit)
+                return;
+
             EnemiesData data = Resources.Load<EnemiesData>("Models/EnemiesData");
             float chanceToBlueEnemy = UnityEngine.Random.Range(0.0f, 100.0f);
 
             EnemyBase enemy = null;
 
             if (chanceToBlueEnemy <= 75.0f)
-                enemy = new RedEnemy(_enemyParent, GetSpawnPointPosition(), _player, 10f, 1f, 1f, data.GetEnemyByType(EnemyType.Red));
+                enemy = new RedEnemy(_enemyParent, GetBottomSpawnPointPosition(), _player, 1f, data.GetEnemyByType(EnemyType.Red));
             else if (chanceToBlueEnemy > 75.0f)
-                enemy = new BlueEnemy(_enemyParent, GetSpawnPointPosition(), _player, 10f, 1f, 1f, data.GetEnemyByType(EnemyType.Blue));
+                enemy = new BlueEnemy(_enemyParent, GetTopSpawnPointPosition(), _player, _bulletPrefab, _bulletParent, 3f, data.GetEnemyByType(EnemyType.Blue));
 
             enemy.EnemyDestroyEvent += EnemyDestroyedEventHandler;
 
